@@ -29,8 +29,10 @@ import tesla from "./company/tesla.png";
 import carrent from "./carrent.png";
 import jobit from "./jobit.png";
 import tripguide from "./tripguide.png";
+import user from "./user.png"
 
 export {
+  user,
   neil_logo,
   backend,
   creator,
