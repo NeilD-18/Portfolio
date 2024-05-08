@@ -265,6 +265,11 @@ a {
   background: linear-gradient(to right, #434343, #000000); /* Standard syntax */
 }
 
+.dropdown-menu-left {
+  top:calc(90% + 3px);
+  right:0; /* Aligns the dropdown menu to the left edge of its container */
+}
+
 .dropdown-menu::before{
   content: '';
   position: absolute;
@@ -285,7 +290,7 @@ a {
 .dropdown-menu.inactive{
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-20px);
+  transform: translateY(-5px);
   transition: var(--speed) ease;
 }
 
