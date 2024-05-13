@@ -9,6 +9,9 @@ import Feedbacks from './Feedbacks';
 import Contact from './Contact';
 import Portal from './Portal'
 import DropdownItem from './DropdownItem';
+import LoginPage from './LoginPage';
+import Form from './Form'
+
 
 export {
   Hero,
@@ -24,5 +27,7 @@ export {
   ComputersCanvas, 
   StarsCanvas,
   Portal,
-  DropdownItem
+  DropdownItem,
+  LoginPage,
+  Form
 }
