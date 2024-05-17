@@ -1,44 +1,24 @@
 import express from 'express';
-import { MongoClient } from 'mongodb';
+import mongoose from 'mongoose';
+import router from './routes/authRoutes.js';
+import 'dotenv/config';
 
 const app = express();
-const port = process.env.PORT || 8081;
+const port = process.env.PORT;
+const mongoURI = process.env.MONGODB_URI
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.error('Could not connect to MongoDB', err));
 
-// MongoDB URI and Client setup
-const uri = "mongodb+srv://ndaterao2:Kajoba_11@portfoliocluster.mrz0xk8.mongodb.net/?retryWrites=true&w=majority&appName=PortfolioCluster"; // Replace with your actual MongoDB URI
-const client = new MongoClient(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+app.use(express.json());
 
-app.use(express.json()); // Middleware to parse JSON bodies
+app.use('/api/users', router);
 
-// Connect to MongoDB
-async function connectToMongoDB() {
-  try {
-    await client.connect();
-    console.log("Successfully connected to MongoDB.");
-    return client.db('your_db_name'); // Replace 'your_db_name' with your actual database name
-  } catch (error) {
-    console.error("Failed to connect to MongoDB", error);
-    process.exit(1); // Stop the Node.js process if unable to connect
-  }
-}
-
-const database = connectToMongoDB();
-
-// Define routes here
-app.get('/', async (req, res) => {
-  try {
-    const db = await database;
-    const ping = await db.command({ ping: 1 });
-    res.status(200).json({ message: "Connected to MongoDB", ping });
-  } catch (error) {
-    res.status(500).json({ message: "Failed to connect to MongoDB", error });
-  }
-});
-
-// Start the server
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
+
+app.get('/', (req, res) => {
+  res.send('Hello from the server!');  // You can replace this message with any response you want
+});
+
