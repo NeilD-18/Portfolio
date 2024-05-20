@@ -36,7 +36,7 @@ const Logo = () => {
             </div>
             <div className={`dropdown-menu ${open ? 'active' : 'inactive'}`}>
                 <ul className='text-secondary'>
-                    <DropdownItem img={user} text="Portal" onClick={setOpen} path="/portal" />
+                    <DropdownItem img={user} text="Portal" onClick={setOpen} path="/login" />
                 </ul>
             </div>
         </div>
