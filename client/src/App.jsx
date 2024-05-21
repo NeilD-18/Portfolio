@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import axios from 'axios';
 import { Toaster } from 'react-hot-toast';
 import { About, Contact, Experience, Feedbacks, Hero, Navbar, Tech, Works, StarsCanvas, Portal, LoginPage } from './components';
+import { UserContextProvider } from '../context/userContext';
 
 axios.defaults.baseURL = 'http://localhost:8081';
 axios.defaults.withCredentials = true;
@@ -32,7 +33,11 @@ const App = () => {
             </>
           } />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/portal" element={<Portal /> } />
+          <Route path="/portal" element={
+            <UserContextProvider>
+              <Portal />
+            </UserContextProvider>
+          } />
         </Routes>
       </div>
     </BrowserRouter>

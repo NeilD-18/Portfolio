@@ -17,5 +17,7 @@ router.use(
 
 router.get("/", controllerFunctions.test)
 router.post("/register", controllerFunctions.registerUser)
+router.post("/login",  controllerFunctions.loginUser)
+router.get("/profile", controllerFunctions.getProfile)
 
 export default router

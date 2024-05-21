@@ -14,9 +14,56 @@ const Form = () => {
     })
     
     
-    const loginUser = (e) => {
+    const loginUser = async (e) => {
         e.preventDefault();
-        axios.get('/');
+        const { username, password } = data;
+        try { 
+            const response = await axios.post('/login', { username, password }); 
+            const { data: responseData } = response; 
+
+            if (responseData.error) { 
+                toast(responseData.error,
+                    {
+                    icon: '❌',
+                    style: {
+                        borderRadius: '10px',
+                        background: '#333',
+                        color: '#fff',
+                    },
+                    }
+                ); 
+            }
+
+            else { 
+                setData({}); 
+                toast('Login Successful',
+                {
+                icon: '✅',
+                style: {
+                    borderRadius: '10px',
+                    background: '#333',
+                    color: '#fff',
+                },
+                }
+            );
+                setTimeout(() => {
+                    navigate('/portal');
+                }, 2000);
+                
+            }
+            }
+          catch (error) {
+            console.error(error);
+            toast("An error occured, please try again",
+              {
+                  icon: '❌',
+                  style: {
+                      borderRadius: '10px',
+                      background: '#333',
+                      color: '#fff',
+                    },
+              }); 
+          }
     }
 
     const registerUser = async (e) => {
@@ -58,12 +105,23 @@ const Form = () => {
           }
         } catch (error) {
           console.error(error);
-          toast.error('An error occurred. Please try again.');
+          toast("An error occured, please try again",
+            {
+                icon: '❌',
+                style: {
+                    borderRadius: '10px',
+                    background: '#333',
+                    color: '#fff',
+                },
+            }); 
         }
       };
   
+    
+    
+    
     return (
-    <form onSubmit={registerUser}>
+    <form onSubmit={loginUser}>
         <div className='bg-gray-900 px-10 py-20 rounded-3xl border border-gray-700'>
             <h1 className={`${styles.heroHeadText} flex justify-center lg:text-[50px] text-white`}>Welcome!</h1>
             <p className='flex font-medium text-lg text-gray-400 justify-center'>Please Enter Your Details</p>
