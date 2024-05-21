@@ -62,7 +62,7 @@ const registerUser = async (req, res) => {
                 error: 'Password is required and should be at least 6 characters long'
             })
         }
-        
+        //check username against database
         const exists = await userModel.findOne({username}); 
         if (exists) {
             return res.json({
@@ -77,12 +77,16 @@ const registerUser = async (req, res) => {
         })
 
         return res.json(user)
-        //check username against database
+        
     } catch (error) {
         console.log(error)
     }
 }
 
+//logout user endpoint
+const logoutUser = (req, res) => {
+    res.cookie('token', '', { httpOnly: true, expires: new Date(0) }).json({ message: 'Logged out successfully' });
+};
 
 //Get Profile Endpoint
 const getProfile = (req,res) => { 
@@ -101,4 +105,4 @@ const getProfile = (req,res) => {
 
 
 
-export default { test, registerUser, loginUser, getProfile }
+export default { test, registerUser, loginUser, getProfile, logoutUser }
