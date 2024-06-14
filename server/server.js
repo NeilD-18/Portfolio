@@ -1,9 +1,10 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import router from './routes/authRoutes.js';
-import 'dotenv/config';
+import dotenv from 'dotenv'
 import cookieParser from 'cookie-parser';
 
+dotenv.config();
 
 const app = express();
 const port = process.env.PORT;

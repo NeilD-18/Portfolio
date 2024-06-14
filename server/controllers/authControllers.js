@@ -103,6 +103,11 @@ const getProfile = (req,res) => {
 }
 
 
+const getBio = (req,res) => { 
+    
+}
+
+
 
 
 export default { test, registerUser, loginUser, getProfile, logoutUser }
