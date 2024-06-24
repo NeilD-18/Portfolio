@@ -1,6 +1,6 @@
 import React from 'react'
 import Form from './Form'
-import { ComputersCanvas } from './canvas'
+import { ComputersCanvas } from '../../canvas'
 
 const LoginPage = () => {
   return (

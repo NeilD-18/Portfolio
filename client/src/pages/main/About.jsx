@@ -2,9 +2,9 @@ import React from 'react'
 import { Tilt } from 'react-tilt'
 import { motion } from 'framer-motion'
 
-import { styles } from '../styles'
-import { services } from '../constants'
-import { fadeIn,textVariant } from '../utils/motion'
+import { styles } from '../../styles'
+import { services } from '../../constants'
+import { fadeIn,textVariant } from '../../utils/motion'
 
 const About = () => {
   return (
@@ -16,9 +16,9 @@ const About = () => {
       <motion.div variants></motion.div>
       <motion.p 
         variants={fadeIn("", "", 0.1, 1)}
-        className='mt-4 text-secondary text-[17px] max-w-3xl leading-[30px]'
+        className="mt-4 text-secondary text-[17px] max-w-3xl leading-[30px]"
         >
-          Im neil blah blah
+          This is a place holder text lepsum potrenum lepsum potrenum lepsum potrenum lepsum potrenum lepsum potrenum lepsum potrenum lepsum potrenum lepsum potrenum lepsum potrenum 
         </motion.p>
 
         <div></div>
