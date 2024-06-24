@@ -1,8 +1,8 @@
 // src/components/Portal.jsx
 import React, { useContext } from 'react';
 
-import { useAuth } from '../../context/authContext';
-import { UserContext } from '../../context/userContext';
+import { useAuth } from '../../../context/authContext';
+import { UserContext } from '../../../context/userContext';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 

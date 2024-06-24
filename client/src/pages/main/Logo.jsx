@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { neil_logo, user } from '../assets';
+import { neil_logo, user } from '../../assets';
 import { Link } from 'react-router-dom';
 import DropdownItem from './DropdownItem';
 

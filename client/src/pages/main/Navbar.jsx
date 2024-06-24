@@ -1,8 +1,8 @@
 import React, { useState, useRef } from 'react'; 
 import { Link } from 'react-router-dom'; 
-import { styles } from '../styles'; 
-import { navLinks } from '../constants';
-import { menu, close } from '../assets';
+import { styles } from '../../styles'; 
+import { navLinks } from '../../constants';
+import { menu, close } from '../../assets';
 import Logo from "./Logo"; 
 import DropdownItem from './DropdownItem';
 

@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import { styles } from '../styles'
+import { styles } from '../../styles'
 import axios from 'axios'
 import {toast} from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom/dist';
-import { useAuth } from '../../context/authContext';
+import { useAuth } from '../../../context/authContext';
 
 const Form = () => {
     
