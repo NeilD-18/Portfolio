@@ -23,6 +23,7 @@ const loginUser = async (req, res) => {
         //Check if passwords match
         const passwordsMatch = await utils.comparePassword(password, user.password);
         if (passwordsMatch) { 
+           
             jwt.sign({username: user.username, id: user._id}, process.env.JWT_SECRET, {}, (err,token) => { 
                 if (err) throw err;
                 res.cookie('token', token).json(user)
@@ -104,7 +105,7 @@ const getProfile = (req,res) => {
 
 
 const getBio = (req,res) => { 
-    
+
 }
 
 
