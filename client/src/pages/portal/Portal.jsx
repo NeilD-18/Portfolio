@@ -4,6 +4,8 @@ import { UserContext } from '../../../context/userContext';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import Sidebar from './Sidebar';
+import AboutSection from './UpdateAboutSection';
+import Experiences from './UpdateExperiencesSection';
 
 const sections = ['About', 'Experiences', 'Contact'];
 
@@ -82,33 +84,57 @@ const Portal = () => {
     console.log('Updating About text to:', text);
   };
 
+
+  const [experiences, setExperiences] = useState([
+    { id: '1', name: 'Experience 1', description: 'Description 1', image: 'https://via.placeholder.com/150', order: 1 },
+    { id: '2', name: 'Experience 2', description: 'Description 2', image: 'https://via.placeholder.com/150', order: 2 },
+  ]);
+
+  const [newExperience, setNewExperience] = useState({ name: '', description: '', image: '' });
+
+  const handleAddExperience = () => {
+    const newExp = { ...newExperience, id: String(experiences.length + 1), order: experiences.length + 1 };
+    setExperiences([...experiences, newExp]);
+    setNewExperience({ name: '', description: '', image: '' });
+  };
+
+  const handleUpdateExperience = (id) => {
+    // Logic to update experience
+  };
+
+  const handleDeleteExperience = (id) => {
+    setExperiences(experiences.filter(exp => exp.id !== id));
+  };
+
+
+
+
+
   const renderSection = () => {
     switch (currentSection) {
       case 'About':
         return (
-          <div className="p-4">
-            <h2 className="text-2xl font-semibold text-gray-300 mb-2">About Section</h2>
-            <p className="text-gray-400 mb-4">{aboutText}</p>
-            <textarea
-              value={newAboutText}
-              onChange={(e) => setNewAboutText(e.target.value)}
-              className="w-full p-2 bg-gray-800 text-white border border-gray-700 rounded-xl mb-2"
-              placeholder="Update About text..."
-            ></textarea>
-            <button
-              onClick={handleAboutTextUpdate}
-              className="bg-violet-700 text-white px-4 py-2 rounded-xl hover:bg-violet-800 transition-colors duration-300"
-            >
-              Update About Text
-            </button>
-          </div>
+            <AboutSection 
+              aboutText={aboutText} 
+              newAboutText={newAboutText} 
+              setNewAboutText={setNewAboutText}
+              handleAboutTextUpdate={handleAboutTextUpdate}
+            /> 
         );
       case 'Experiences':
         return (
-          <div className="p-4">
-            <h2 className="text-2xl font-semibold text-gray-300 mb-2">Experiences Section</h2>
-            {/* Add form or content to update experiences here */}
-          </div>
+          
+            
+            <Experiences
+              experiences={experiences}
+              setExperiences={setExperiences}
+              newExperience={newExperience}
+              setNewExperience={setNewExperience}
+              handleAddExperience={handleAddExperience}
+              handleUpdateExperience={handleUpdateExperience}
+              handleDeleteExperience={handleDeleteExperience}
+            />
+          
         );
       case 'Contact':
         return (
