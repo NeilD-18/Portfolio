@@ -108,7 +108,20 @@ const getBio = (req,res) => {
 
 }
 
+const updateBio = (req, res) => { 
 
+}
 
+const addExperience = (req, res) => { 
+
+}
+
+const deleteExperience = (req, res) => { 
+
+}
+
+const editExperience = (req, res) => { 
+    
+}
 
 export default { test, registerUser, loginUser, getProfile, logoutUser }
