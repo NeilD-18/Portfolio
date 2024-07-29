@@ -65,7 +65,7 @@ const Experiences = ({ newExperience, setNewExperience, handleAddExperience, han
   };
 
   return (
-    <div className="p-6 bg-gray-900 min-h-screen">
+    <div className="p-6 bg-gray-900 min-h-screen rounded-lg">
       <h2 className="text-3xl font-bold text-white mb-6">Experiences</h2>
       <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
         <SortableContext items={experiences} strategy={verticalListSortingStrategy}>

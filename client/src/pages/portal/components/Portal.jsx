@@ -6,6 +6,8 @@ import toast from 'react-hot-toast';
 import Sidebar from './Sidebar';
 import AboutSection from './UpdateAboutSection';
 import Experiences from './UpdateExperiencesSection';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 
 const sections = ['About', 'Experiences', 'Contact'];
 
@@ -38,7 +40,7 @@ const Portal = () => {
         icon: '✅',
         style: {
           borderRadius: '10px',
-          background: '#333',
+          background: '#1c1c1e',
           color: '#fff',
         },
       });
@@ -48,7 +50,7 @@ const Portal = () => {
         icon: '❌',
         style: {
           borderRadius: '10px',
-          background: '#333',
+          background: '#1c1c1e',
           color: '#fff',
         },
       });
@@ -63,7 +65,7 @@ const Portal = () => {
         icon: '✅',
         style: {
           borderRadius: '10px',
-          background: '#333',
+          background: '#1c1c1e',
           color: '#fff',
         },
       });
@@ -73,7 +75,7 @@ const Portal = () => {
         icon: '❌',
         style: {
           borderRadius: '10px',
-          background: '#333',
+          background: '#1c1c1e',
           color: '#fff',
         },
       });
@@ -83,7 +85,6 @@ const Portal = () => {
   const mockUpdateAboutText = async (text) => {
     console.log('Updating About text to:', text);
   };
-
 
   const [experiences, setExperiences] = useState([
     { id: '1', name: 'Experience 1', description: 'Description 1', image: 'https://via.placeholder.com/150', order: 1 },
@@ -106,35 +107,28 @@ const Portal = () => {
     setExperiences(experiences.filter(exp => exp.id !== id));
   };
 
-
-
-
-
   const renderSection = () => {
     switch (currentSection) {
       case 'About':
         return (
-            <AboutSection 
-              aboutText={aboutText} 
-              newAboutText={newAboutText} 
-              setNewAboutText={setNewAboutText}
-              handleAboutTextUpdate={handleAboutTextUpdate}
-            /> 
+          <AboutSection 
+            aboutText={aboutText} 
+            newAboutText={newAboutText} 
+            setNewAboutText={setNewAboutText}
+            handleAboutTextUpdate={handleAboutTextUpdate}
+          /> 
         );
       case 'Experiences':
         return (
-          
-            
-            <Experiences
-              experiences={experiences}
-              setExperiences={setExperiences}
-              newExperience={newExperience}
-              setNewExperience={setNewExperience}
-              handleAddExperience={handleAddExperience}
-              handleUpdateExperience={handleUpdateExperience}
-              handleDeleteExperience={handleDeleteExperience}
-            />
-          
+          <Experiences
+            experiences={experiences}
+            setExperiences={setExperiences}
+            newExperience={newExperience}
+            setNewExperience={setNewExperience}
+            handleAddExperience={handleAddExperience}
+            handleUpdateExperience={handleUpdateExperience}
+            handleDeleteExperience={handleDeleteExperience}
+          />
         );
       case 'Contact':
         return (
@@ -153,17 +147,23 @@ const Portal = () => {
       <Sidebar sections={sections} setCurrentSection={setCurrentSection} />
       <div className="flex-1 text-white p-6">
         <div className="flex justify-between items-center mb-6">
-          {!!user && <p>{user.username}</p>}
-          
+          <div className="flex items-center space-x-4">
+            <img
+              src={user?.profilePicture || 'https://via.placeholder.com/40'}
+              alt="User Avatar"
+              className="w-10 h-10 rounded-full"
+            />
+            {!!user && <p className="text-lg font-semibold">{user.username}</p>}
+          </div>
           <button
             onClick={handleLogout}
-            className="bg-red-600 text-white px-4 py-2 rounded-xl hover:bg-red-700 transition-colors duration-300"
+            className="bg-red-600 text-white px-4 py-2 rounded-xl hover:bg-red-700 transition-colors duration-300 flex items-center space-x-2"
           >
-            Logout
+            <FontAwesomeIcon icon={faSignOutAlt} />
+            <span>Logout</span>
           </button>
         </div>
-        <div className="bg-gray-900 rounded-3xl shadow-lg p-6 border border-gray-700">
-          
+        <div className="bg-gray-800 rounded-3xl shadow-lg p-6 border border-gray-700">
           {renderSection()}
         </div>
       </div>
