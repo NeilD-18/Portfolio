@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { useAuth } from '../../../context/authContext';
-import { UserContext } from '../../../context/userContext';
+import { useAuth } from '../../../../context/authContext';
+import { UserContext } from '../../../../context/userContext';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import Sidebar from './Sidebar';
