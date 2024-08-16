@@ -22,6 +22,8 @@ router.post("/login",  controllerFunctions.loginUser)
 router.post("/logout", controllerFunctions.logoutUser)
 router.get("/profile", controllerFunctions.getProfile)
 router.get("/portal", authenticateToken, controllerFunctions.test)
+router.get("/about", controllerFunctions.getBio)
+router.put("/about", controllerFunctions.updateBio)
 
 
 export default router
