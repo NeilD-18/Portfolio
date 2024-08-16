@@ -1,0 +1,13 @@
+# Get Bio
+GET http://localhost:8081/about
+Content-Type: application/json
+
+###
+
+# Update Bio
+PUT http://localhost:8081/about
+Content-Type: application/json
+
+{
+  "about": "You feel meeeeee"
+}
