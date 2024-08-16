@@ -1,9 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import { handleAboutTextUpdate, handleFetchAboutText } from "../handlers/aboutSectionHandlers";
 
-const AboutSection = ({ aboutText, newAboutText, setNewAboutText, handleAboutTextUpdate }) => {
+const AboutSection = ({ }) => {
+  const [aboutText, setAboutText] = useState('');
+  const [newAboutText, setNewAboutText] = useState('');
   const [isEditing, setIsEditing] = useState(false);
+
+  useEffect(() => {
+    handleFetchAboutText(setAboutText)
+}, []);
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -11,7 +18,7 @@ const AboutSection = ({ aboutText, newAboutText, setNewAboutText, handleAboutTex
   };
 
   const handleSaveClick = () => {
-    handleAboutTextUpdate();
+    handleAboutTextUpdate(newAboutText, setAboutText);
     setIsEditing(false);
   };
 

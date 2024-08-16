@@ -8,6 +8,7 @@ import AboutSection from './UpdateAboutSection';
 import Experiences from './UpdateExperiencesSection';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { handleLogout } from '../handlers/portalHandlers';
 
 const sections = ['About', 'Experiences', 'Contact'];
 
@@ -16,47 +17,11 @@ const Portal = () => {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
 
-  const [aboutText, setAboutText] = useState('');
-  const [newAboutText, setNewAboutText] = useState('');
   const [currentSection, setCurrentSection] = useState(sections[0]);
 
-  useEffect(() => {
-    const fetchAboutText = async () => {
-      const currentAboutText = await mockFetchAboutText();
-      setAboutText(currentAboutText);
-    };
-    fetchAboutText();
-  }, []);
 
-  const mockFetchAboutText = async () => {
-    return 'This is the current About text.';
-  };
 
-  const handleLogout = async () => {
-    try {
-      await logout();
-      navigate('/');
-      toast('Logout Successful', {
-        icon: '✅',
-        style: {
-          borderRadius: '10px',
-          background: '#1c1c1e',
-          color: '#fff',
-        },
-      });
-    } catch (error) {
-      console.error('Failed to logout', error);
-      toast('Logout Failed. Try Again', {
-        icon: '❌',
-        style: {
-          borderRadius: '10px',
-          background: '#1c1c1e',
-          color: '#fff',
-        },
-      });
-    }
-  };
-
+  
   const handleAboutTextUpdate = async () => {
     try {
       await mockUpdateAboutText(newAboutText);
@@ -82,52 +47,21 @@ const Portal = () => {
     }
   };
 
-  const mockUpdateAboutText = async (text) => {
-    console.log('Updating About text to:', text);
-  };
 
-  const [experiences, setExperiences] = useState([
-    { id: '1', name: 'Experience 1', description: 'Description 1', image: 'https://via.placeholder.com/150', order: 1 },
-    { id: '2', name: 'Experience 2', description: 'Description 2', image: 'https://via.placeholder.com/150', order: 2 },
-  ]);
-
-  const [newExperience, setNewExperience] = useState({ name: '', description: '', image: '' });
-
-  const handleAddExperience = () => {
-    const newExp = { ...newExperience, id: String(experiences.length + 1), order: experiences.length + 1 };
-    setExperiences([...experiences, newExp]);
-    setNewExperience({ name: '', description: '', image: '' });
-  };
-
-  const handleUpdateExperience = (id) => {
-    // Logic to update experience
-  };
-
-  const handleDeleteExperience = (id) => {
-    setExperiences(experiences.filter(exp => exp.id !== id));
-  };
+ 
 
   const renderSection = () => {
     switch (currentSection) {
       case 'About':
         return (
           <AboutSection 
-            aboutText={aboutText} 
-            newAboutText={newAboutText} 
-            setNewAboutText={setNewAboutText}
-            handleAboutTextUpdate={handleAboutTextUpdate}
+           
           /> 
         );
       case 'Experiences':
         return (
           <Experiences
-            experiences={experiences}
-            setExperiences={setExperiences}
-            newExperience={newExperience}
-            setNewExperience={setNewExperience}
-            handleAddExperience={handleAddExperience}
-            handleUpdateExperience={handleUpdateExperience}
-            handleDeleteExperience={handleDeleteExperience}
+            
           />
         );
       case 'Contact':
@@ -156,7 +90,7 @@ const Portal = () => {
             {!!user && <p className="text-lg font-semibold">{user.username}</p>}
           </div>
           <button
-            onClick={handleLogout}
+            onClick={() => handleLogout(logout, navigate)}
             className="bg-red-600 text-white px-4 py-2 rounded-xl hover:bg-red-700 transition-colors duration-300 flex items-center space-x-2"
           >
             <FontAwesomeIcon icon={faSignOutAlt} />

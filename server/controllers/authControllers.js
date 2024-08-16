@@ -1,4 +1,5 @@
 import userModel from "../models/userModel.js";
+import About from "../models/aboutModel.js";
 import utils from "../utils/encrypt.js"
 import jwt from "jsonwebtoken"; 
 
@@ -104,13 +105,45 @@ const getProfile = (req,res) => {
 }
 
 
-const getBio = (req,res) => { 
+// Controller to get the bio
+const getBio = async (req, res) => {
+    try {
+        const bio = await About.findOne();
+        if (!bio) {
+            return res.status(404).json({ message: 'Bio not found' });
+        }
+        res.status(200).json(bio);
+    } catch (error) {
+        console.error('Error fetching bio:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
 
-}
+// Controller to update the bio
+const updateBio = async (req, res) => {
+    const { about } = req.body;
 
-const updateBio = (req, res) => { 
+    if (!about) {
+        return res.status(400).json({ message: 'About field is required' });
+    }
 
-}
+    try {
+        let bio = await About.findOne();
+
+        if (bio) {
+            bio.about = about;
+            bio = await bio.save();
+        } else {
+            bio = new About({ about });
+            bio = await bio.save();
+        }
+
+        res.status(200).json(bio);
+    } catch (error) {
+        console.error('Error updating bio:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
 
 const addExperience = (req, res) => { 
 
@@ -124,4 +157,4 @@ const editExperience = (req, res) => {
     
 }
 
-export default { test, registerUser, loginUser, getProfile, logoutUser }
+export default { test, registerUser, loginUser, getProfile, logoutUser, getBio, updateBio }
