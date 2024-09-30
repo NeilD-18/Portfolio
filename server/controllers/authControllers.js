@@ -185,14 +185,14 @@ const deleteExperience = async (req, res) => {
 
 const addExperience = async (req, res) => {
     try {
-        const { role, responsibilities, startDate, endDate } = req.body;
+        const { companyName, role, responsibilities, startDate, endDate } = req.body;
         
         console.log('role', role)
         console.log('Request body:', req.body);
         console.log('Uploaded file:', req.file);
 
         // Validate required fields
-        if (!role || !responsibilities || !startDate || !endDate) {
+        if (!companyName || !role || !responsibilities || !startDate || !endDate) {
             return res.status(400).json({ error: "All fields are required" });
         }
 
@@ -208,6 +208,7 @@ const addExperience = async (req, res) => {
 
         // Create a new experience document
         const newExperience = new Experience({
+            companyName: companyName, 
             companyPicture: companyPictureKey, // Save the S3 key
             role,
             responsibilities,
@@ -232,13 +233,13 @@ const addExperience = async (req, res) => {
 const updateExperience = async (req, res) => {
     try {
       const { publicId } = req.params; // Assuming the experience ID is passed as a URL parameter
-      const { role, responsibilities, startDate, endDate } = req.body;
+      const { companyName, role, responsibilities, startDate, endDate } = req.body;
   
       console.log('Request body:', req.body);
       console.log('Uploaded file:', req.file);
   
       // Validate required fields
-      if (!role || !responsibilities || !startDate || !endDate) {
+      if (!companyName || !role || !responsibilities || !startDate || !endDate) {
         console.log("something wrong here");
         return res.status(400).json({ error: "All fields are required" });
       }
@@ -274,6 +275,7 @@ const updateExperience = async (req, res) => {
       experience = await Experience.findOneAndUpdate(
         { publicId }, // Filter
         {
+          companyName,
           role,
           responsibilities,
           dateRange: {
