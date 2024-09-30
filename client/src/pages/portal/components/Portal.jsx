@@ -47,7 +47,7 @@ const Portal = () => {
         <div className="flex justify-between items-center mb-6">
           <div className="flex items-center space-x-4">
             <img
-              src={user?.profilePicture || 'public/Neil_Logo.svg'}
+              src={user?.profilePicture || '/Neil_Logo.svg'}
               alt="User Avatar"
               className="w-10 h-10 rounded-full"
             />
