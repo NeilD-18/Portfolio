@@ -6,6 +6,7 @@ const AddExperienceModal = ({
     modalIsOpen, 
     setModalIsOpen, 
     handleExperienceSubmit, 
+    handleUpdateExperienceSubmit,
     experiences, 
     setExperiences, 
     newExperience, 
@@ -15,10 +16,25 @@ const AddExperienceModal = ({
 
     const isEditing = Boolean(newExperience.publicId); // Determine if it's edit mode
 
+    // Function to reset the form fields
+    const resetFormFields = () => {
+        setNewExperience({
+            role: '',
+            responsibilities: '',
+            startDate: null,
+            endDate: null,
+            companyPicture: null,
+            publicId: null
+        });
+    };
+
     return (
         <Modal 
             isOpen={modalIsOpen} 
-            onRequestClose={() => setModalIsOpen(false)} 
+            onRequestClose={() => {
+                setModalIsOpen(false);
+                resetFormFields(); // Reset fields on modal close
+            }} 
             className="bg-gray-800 p-6 rounded-lg max-w-lg mx-auto my-20"
             overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
         >
@@ -26,7 +42,16 @@ const AddExperienceModal = ({
                 {isEditing ? "Edit Experience" : "Add New Experience"}
             </h3>
             <form 
-                onSubmit={(e) => handleExperienceSubmit(e, newExperience, setExperiences, experiences, setModalIsOpen)} 
+                onSubmit={(e) => {
+                    e.preventDefault(); 
+                    
+                
+                    isEditing
+                        ? handleUpdateExperienceSubmit(e, newExperience.publicId, newExperience, setExperiences, experiences, setModalIsOpen)
+                        : handleExperienceSubmit(e, newExperience, setExperiences, experiences, setModalIsOpen);
+                    
+                    resetFormFields();
+                }}
                 className="space-y-4"
             >
                 <div>

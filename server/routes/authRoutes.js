@@ -35,7 +35,7 @@ router.put("/about", controllerFunctions.updateBio)
 router.get('/experiences', controllerFunctions.getExperiences)
 router.post('/experiences', upload.single('companyPicture'),  controllerFunctions.addExperience);
 router.delete('/experiences/:publicId', controllerFunctions.deleteExperience);
-router.put('/experience/update/:publicId', controllerFunctions.updateExperience)
+router.put('/experience/update/:publicId', upload.single('companyPicture'), controllerFunctions.updateExperience)
 router.get('/experience/image/:key', controllerFunctions.getExperienceImage);
 
 export default router

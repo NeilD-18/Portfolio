@@ -5,7 +5,7 @@ import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import AddExperienceModal from '../modals/addExperienceModal';
-import { fetchExperiences, handleExperienceSubmit, handleFileChange, handleUpdateExperience, handleDeleteExperience } from '../handlers/experienceSectionHandlers';
+import { fetchExperiences, handleExperienceSubmit, handleFileChange, handleUpdateExperience, handleDeleteExperience, handleUpdateExperienceSubmit } from '../handlers/experienceSectionHandlers';
 
 const Experiences = () => {
   const [experiences, setExperiences] = useState([]);
@@ -34,7 +34,7 @@ const Experiences = () => {
                   <div className="flex-1">
                     <h3 className="text-xl font-semibold">{experience.role}</h3>
                     <p className="text-gray-400">{experience.responsibilities}</p>
-                    <p>{new Date(experience.dateRange.startDate).toLocaleDateString('en-US', { month: '2-digit', year: 'numeric' })} - {new Date(experience.dateRange.endDate).toLocaleDateString('en-US', { month: '2-digit', year: 'numeric' })}</p>
+                    <p>{String(new Date(experience.dateRange.startDate).getUTCMonth() + 1).padStart(2, '0')}/{new Date(experience.dateRange.startDate).getUTCFullYear()} - {String(new Date(experience.dateRange.endDate).getUTCMonth() + 1).padStart(2, '0')}/{new Date(experience.dateRange.endDate).getUTCFullYear()}</p>
                   </div>
                   <div className="flex space-x-2">
                     <button onClick={() => handleUpdateExperience(experience.publicId, experiences, setNewExperience, setModalIsOpen)} className="text-blue-500 hover:text-blue-700 transition duration-300">
@@ -62,11 +62,13 @@ const Experiences = () => {
         modalIsOpen = {modalIsOpen}
         setModalIsOpen = {setModalIsOpen}
         handleExperienceSubmit = {handleExperienceSubmit}
+        handleUpdateExperienceSubmit={handleUpdateExperienceSubmit}
         experiences = {experiences}
         setExperiences = {setExperiences}
         newExperience = {newExperience}
         setNewExperience = {setNewExperience}
         handleFileChange= {handleFileChange}
+    
 
       />
     </div>

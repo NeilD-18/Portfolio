@@ -1,4 +1,4 @@
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { S3Client, PutObjectCommand, BucketAccelerateStatus, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -28,5 +28,22 @@ export const uploadFileToS3 = async (file) => {
         return { key: uniqueFileName }; // Return the S3 key
     } catch (error) {
         throw new Error(`File upload failed: ${error.message}`);
+    }
+};
+
+
+export const deleteFileFromS3 = async (s3Key) => {
+    const params = {
+        Bucket: process.env.S3_BUCKET_NAME, // Ensure S3_BUCKET_NAME is set in your environment variables
+        Key: s3Key
+    };
+
+    try {
+        const command = new DeleteObjectCommand(params);
+        await s3Client.send(command); // Send the delete request to S3
+        console.log(`File ${s3Key} deleted from S3.`);
+    } catch (error) {
+        console.error(`Failed to delete file from S3: ${error.message}`);
+        throw new Error('Failed to delete file from S3');
     }
 };
