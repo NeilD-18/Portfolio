@@ -11,3 +11,12 @@ Content-Type: application/json
 {
   "about": "You feel meeeeee"
 }
+
+
+
+### 
+# Get Experience Image
+GET http://localhost:8081/experience/image/experienceImages%2F1724640246717-TheOppositions.txt
+Content-Type: application/json
+
+
