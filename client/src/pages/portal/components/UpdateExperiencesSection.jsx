@@ -11,6 +11,7 @@ const Experiences = () => {
   const [experiences, setExperiences] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [newExperience, setNewExperience] = useState({
+    companyName: '', 
     role: '',
     responsibilities: '',
     startDate: null,
@@ -33,6 +34,7 @@ const Experiences = () => {
                   <img src={experience.companyPicture} alt={experience.role} className="w-16 h-16 object-cover rounded-full" />
                   <div className="flex-1">
                     <h3 className="text-xl font-semibold">{experience.role}</h3>
+                    <h2 className="text-lg ">{experience.companyName}</h2>
                     <p className="text-gray-400">{experience.responsibilities}</p>
                     <p>{String(new Date(experience.dateRange.startDate).getUTCMonth() + 1).padStart(2, '0')}/{new Date(experience.dateRange.startDate).getUTCFullYear()} - {String(new Date(experience.dateRange.endDate).getUTCMonth() + 1).padStart(2, '0')}/{new Date(experience.dateRange.endDate).getUTCFullYear()}</p>
                   </div>

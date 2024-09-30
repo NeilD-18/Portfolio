@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid'; // UUID for generating unique IDs
 
 const experienceSchema = new mongoose.Schema({
     role: { type: String, required: true },
+    companyName: { type: String, required: true}, 
     responsibilities: { type: String, required: true },
     companyPicture: {type: String, required: true },
     dateRange: {

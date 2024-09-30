@@ -19,6 +19,7 @@ const AddExperienceModal = ({
     // Function to reset the form fields
     const resetFormFields = () => {
         setNewExperience({
+            companyName: '', 
             role: '',
             responsibilities: '',
             startDate: null,
@@ -54,6 +55,22 @@ const AddExperienceModal = ({
                 }}
                 className="space-y-4"
             >
+                
+                <div>
+                    <label className="block text-sm font-medium text-gray-300">Company Name</label>
+                    <input
+                        type="text"
+                        name="companyName"
+                        placeholder="Company Name"
+                        value={newExperience.companyName}
+                        onChange={(e) => setNewExperience({ ...newExperience, companyName: e.target.value })}
+                        className="w-full p-2 bg-gray-700 text-white border border-gray-600 rounded-lg"
+                        required
+                    />
+                </div>
+                
+                
+                    
                 <div>
                     <label className="block text-sm font-medium text-gray-300">Role</label>
                     <input

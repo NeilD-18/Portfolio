@@ -11,11 +11,13 @@ export const handleExperienceSubmit = async (e, newExperience, setExperiences, e
 
   
   const form = new FormData();
+  form.append('companyName', newExperience.companyName)
   form.append('role', newExperience.role);
   form.append('responsibilities', newExperience.responsibilities);
   form.append('startDate', newExperience.startDate.toISOString().slice(0, 7)); // Only keep the year and month
   form.append('endDate', newExperience.endDate.toISOString().slice(0, 7)); // Only keep the year and month
   form.append('companyPicture', newExperience.companyPicture);
+  
   
 
 
@@ -38,7 +40,7 @@ export const handleUpdateExperienceSubmit = async (e, experienceId, newExperienc
   
   e.preventDefault()
   
-  const {role, responsibilities, startDate, endDate, companyPicture } = newExperience;
+  const {role, responsibilities, startDate, endDate, companyPicture, companyName } = newExperience;
   console.log(role)
   console.log(responsibilities)
   console.log(startDate)
@@ -47,10 +49,11 @@ export const handleUpdateExperienceSubmit = async (e, experienceId, newExperienc
   
   const formData = new FormData();
 
-  if (!role || !responsibilities || !startDate || !endDate) {
+  if (!role || !responsibilities || !startDate || !endDate || !companyName)  {
     return alert("All fields are required");
   }
 
+  formData.append('companyName', companyName)
   formData.append('role', role);
   formData.append('responsibilities', responsibilities);
   formData.append('startDate', startDate.toISOString().slice(0, 7));
