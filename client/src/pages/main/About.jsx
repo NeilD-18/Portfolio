@@ -1,29 +1,50 @@
 import React from 'react'
-import { Tilt } from 'react-tilt'
 import { motion } from 'framer-motion'
-
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 import { styles } from '../../styles'
-import { services } from '../../constants'
 import { fadeIn,textVariant } from '../../utils/motion'
+import { SectionWrapper } from '../../hoc'
 
 const About = () => {
+  
+  
+  // State to hold the bio content
+  const [bio, setBio] = useState('');
+
+  // Fetch the bio from the server when the component mounts
+  useEffect(() => {
+    const fetchBio = async () => {
+      try {
+        const response = await axios.get('/about');
+        setBio(response.data.about); 
+      } catch (error) {
+        console.error('Error fetching the bio:', error);
+      }
+    };
+
+    fetchBio(); // Call the function to fetch the bio
+  }, []); // Empty dependency arr
+  
+  
+  
   return (
-    <>  
+    <>
       <motion.div variants={textVariant()}>
-        <p className={styles.sectionSubText}>A little bit</p>
-        <h2 className={styles.sectionHeadText}>About Me</h2>
+        <p className={styles.sectionSubText}>Introduction</p>
+        <h2 className={styles.sectionHeadText}>Overview.</h2>
       </motion.div>
-      <motion.div variants></motion.div>
-      <motion.p 
+
+      <motion.p
         variants={fadeIn("", "", 0.1, 1)}
-        className="mt-4 text-secondary text-[17px] max-w-3xl leading-[30px]"
-        >
-           is a place holder text lepsum potrenum lepsum potrenum lepsum potrenum lepsum potrenum lepsum potrenum lepsum potrenum lepsum potrenum lepsum potrenum lepsum potrenum 
-        </motion.p>
+        className='mt-4 text-secondary text-[17px] max-w-3xl leading-[30px]'
+      >
+         {bio} {/* Dynamically render the fetched bio */}
+      </motion.p>
 
-        <div></div>
     </>
-  )
-}
+  );
+};
 
-export default About
+
+export default SectionWrapper(About, 'about')
