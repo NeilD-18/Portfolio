@@ -1,4 +1,4 @@
-import { S3Client, PutObjectCommand, BucketAccelerateStatus, DeleteObjectCommand } from "@aws-sdk/client-s3";
+import { S3Client, PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -11,8 +11,17 @@ export const s3Client = new S3Client({
     region: process.env.AWS_REGION,
 });
 
-export const uploadFileToS3 = async (file) => {
-    const uniqueFileName = `experienceImages/${Date.now()}-${file.originalname}`;
+export const uploadFileToS3 = async (file, folder) => {
+    // Determine the folder path based on the input
+    let uniqueFileName;
+
+    if (folder === 'experience') {
+        uniqueFileName = `experienceImages/${Date.now()}-${file.originalname}`;
+    } else if (folder === 'about') {
+        uniqueFileName = `aboutImages/${Date.now()}-${file.originalname}`;
+    } else {
+        throw new Error("Invalid folder specified");
+    }
     const params = {
         Bucket: process.env.S3_BUCKET_NAME,
         Key: uniqueFileName,
