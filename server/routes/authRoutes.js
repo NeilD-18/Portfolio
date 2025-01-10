@@ -32,6 +32,14 @@ router.get("/profile", controllerFunctions.getProfile)
 router.get("/portal", authenticateToken, controllerFunctions.test)
 router.get("/about", controllerFunctions.getBio)
 router.put("/about", controllerFunctions.updateBio)
+
+router.get('/about/image/:key', controllerFunctions.getAboutImage)
+router.get('/about/images', controllerFunctions.getAboutImages)
+router.post('/about/update-image', upload.single("file"), controllerFunctions.updateAboutImage)
+
+
+
+
 router.get('/experiences', controllerFunctions.getExperiences)
 router.post('/experiences', upload.single('companyPicture'),  controllerFunctions.addExperience);
 router.delete('/experiences/:publicId', controllerFunctions.deleteExperience);
@@ -39,3 +47,23 @@ router.put('/experience/update/:publicId', upload.single('companyPicture'), cont
 router.get('/experience/image/:key', controllerFunctions.getExperienceImage);
 
 export default router
+
+
+const getExperiences = async (req, res) => {
+    try {
+        const experiences = await Experience.find().sort({ 'dateRange.startDate': -1 }); // Sort by date in ascending order
+
+        // Map through experiences to generate correct image URLs
+        const experiencesWithImageUrls = experiences.map(exp => {
+            return {
+                ...exp.toObject(),
+                companyPicture: `${req.protocol}://${req.get('host')}/experience/image/${encodeURIComponent(exp.companyPicture)}`
+            };
+        });
+
+        res.status(200).json(experiencesWithImageUrls);
+    } catch (error) {
+        console.error("Error retrieving experiences:", error.message || error);
+        res.status(500).json({ error: "Failed to retrieve experiences" });
+    }
+};
