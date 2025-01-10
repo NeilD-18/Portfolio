@@ -1,30 +1,10 @@
-import React from 'react'
-import { motion } from 'framer-motion'
-import { Tilt } from 'react-tilt'
-
-
-import { useState, useEffect } from 'react'
-import axios from 'axios'
-import { styles } from '../../styles'
-import { fadeIn,textVariant } from '../../utils/motion'
-import { SectionWrapper } from '../../hoc'
-
-const services = [
-  {
-    image: '/linkedin_headshot.jpg', // Replace with actual image path
-  },
-  {
-    image: '/Neil_Logo.svg', // Replace with actual image path
-  },
-  {
-    image: '/Neil_Logo.svg', // Replace with actual image path
-  },
-  {
-    image: '/Neil_Logo.svg', // Replace with actual image path
-  },
-];
-
-
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Tilt } from 'react-tilt';
+import axios from 'axios';
+import { styles } from '../../styles';
+import { fadeIn, textVariant } from '../../utils/motion';
+import { SectionWrapper } from '../../hoc';
 
 const ServiceCard = ({ index, image }) => (
   <Tilt className="xs:w-[250px] w-full">
@@ -50,48 +30,30 @@ const ServiceCard = ({ index, image }) => (
   </Tilt>
 );
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const About = () => {
-  
-  
-  // State to hold the bio content
+  // State to hold the bio content and service images
   const [bio, setBio] = useState('');
+  const [images, setImages] = useState([null, null, null, null]); // 4 image slots
 
-  // Fetch the bio from the server when the component mounts
+  // Fetch the bio and images from the server when the component mounts
   useEffect(() => {
-    const fetchBio = async () => {
+    const fetchAboutData = async () => {
       try {
-        const response = await axios.get('/about');
-        setBio(response.data.about); 
+        // Fetch bio
+        const bioResponse = await axios.get('/about');
+        setBio(bioResponse.data.about);
+
+        // Fetch images
+        const imageResponse = await axios.get('/about/images');
+        setImages(imageResponse.data.images || [null, null, null, null]); // Set the fetched images
       } catch (error) {
-        console.error('Error fetching the bio:', error);
+        console.error('Error fetching about data:', error);
       }
     };
 
-    fetchBio(); // Call the function to fetch the bio
-  }, []); // Empty dependency arr
-  
-  
-  
+    fetchAboutData(); // Fetch both bio and images
+  }, []);
+
   return (
     <>
       <motion.div variants={textVariant()} className="flex flex-col items-center">
@@ -99,23 +61,29 @@ const About = () => {
         <h2 className={styles.sectionHeadText}>About Me.</h2>
 
         <motion.p
-      variants={fadeIn("", "", 0.1, 1)}
-      className="mt-4 text-secondary text-[17px] text-center max-w-3xl leading-[30px]"
-    >
-      {bio} {/* Dynamically render the fetched bio */}
-    </motion.p>
+          variants={fadeIn('', '', 0.1, 1)}
+          className="mt-4 text-secondary text-[17px] text-center max-w-3xl leading-[30px]"
+        >
+          {bio} {/* Dynamically render the fetched bio */}
+        </motion.p>
       </motion.div>
 
-      
-      <div className='mt-20 flex flex-wrap gap-10'>
-        {services.map((service, index) => (
-          <ServiceCard key={service.title} index={index} {...service} />
+      <div className="mt-20 flex flex-wrap gap-10">
+        {images.map((image, index) => (
+          image ? (
+            <ServiceCard key={`service-${index}`} index={index} image={image} />
+          ) : (
+            <div
+              key={`empty-${index}`}
+              className="w-[250px] h-[280px] bg-gray-800 border-2 border-dashed border-gray-600 flex justify-center items-center rounded-[20px]"
+            >
+              <span className="text-gray-400 text-xl">No Image</span>
+            </div>
+          )
         ))}
       </div>
-
     </>
   );
 };
 
-
-export default SectionWrapper(About, 'about')
+export default SectionWrapper(About, 'about');
