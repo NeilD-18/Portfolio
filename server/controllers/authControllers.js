@@ -427,6 +427,11 @@ const getExperienceImage = async (req, res) => {
 };
 
 
+const addProject = async (req, res) => { 
+    
+}
+
+
 export default { 
     test, 
     registerUser, 
