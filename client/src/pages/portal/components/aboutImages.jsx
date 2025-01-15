@@ -20,7 +20,7 @@ const AboutImagesComponent = () => {
           <div
             key={index}
             onClick={() => handleSquareClick(index, setRefresh)}
-            className={`w-36 h-36 flex items-center justify-center rounded-lg transition duration-300 cursor-pointer ${
+            className={`w-64 h-64 flex items-center justify-center rounded-lg transition duration-300 cursor-pointer ${
               image ? "bg-gray-800" : "bg-gray-800 border-2 border-dashed border-gray-600 hover:bg-gray-700"
             }`}
           >
