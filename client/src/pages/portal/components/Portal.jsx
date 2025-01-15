@@ -8,8 +8,9 @@ import Experiences from './UpdateExperiencesSection';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { handleLogout } from '../handlers/portalHandlers';
+import Projects from './UpdateProjectsSection';
 
-const sections = ['About', 'Experiences', 'Contact'];
+const sections = ['About', 'Experiences', 'Projects', 'Contact'];
 
 const Portal = () => {
   const { logout } = useAuth();
@@ -27,6 +28,14 @@ const Portal = () => {
       case 'Experiences':
         return (
           <Experiences />
+        );
+
+
+      case 'Projects':
+        return (
+       
+            <Projects/>
+          
         );
       case 'Contact':
         return (

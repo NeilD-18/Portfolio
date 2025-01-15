@@ -7,8 +7,6 @@ const AboutSection = () => (
   <div>
     <AboutTextComponent />
     <AboutImagesComponent />
-  
-
   </div>
 );
 
