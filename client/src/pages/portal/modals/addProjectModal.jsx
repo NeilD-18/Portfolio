@@ -18,7 +18,7 @@ const AddProjectModal = ({
     setNewProject({
       title: '',
       description: '',
-      githubLink: '',
+      githubURL: "",
       techStack: '',
       projectImage: null,
       publicId: null,
@@ -42,8 +42,8 @@ const AddProjectModal = ({
         onSubmit={(e) => {
           e.preventDefault();
           isEditing
-            ? handleUpdateProjectSubmit(newProject, setProjects)
-            : handleProjectSubmit(newProject, setProjects);
+            ? handleUpdateProjectSubmit(e, newProject, setProjects)
+            : handleProjectSubmit(e, newProject, setProjects);
           setModalIsOpen(false);
           resetFormFields();
         }}
@@ -56,7 +56,7 @@ const AddProjectModal = ({
             type="text"
             name="title"
             placeholder="Project Title"
-            value={newProject.title}
+            value={newProject.title || ""}
             onChange={(e) => setNewProject({ ...newProject, title: e.target.value })}
             className="w-full p-2 bg-gray-700 text-white border border-gray-600 rounded-lg"
             required
@@ -69,7 +69,7 @@ const AddProjectModal = ({
           <textarea
             name="description"
             placeholder="Project Description"
-            value={newProject.description}
+            value={newProject.description || ""}
             onChange={(e) => setNewProject({ ...newProject, description: e.target.value })}
             className="w-full p-2 bg-gray-700 text-white border border-gray-600 rounded-lg"
             rows="4"
@@ -82,10 +82,10 @@ const AddProjectModal = ({
           <label className="block text-sm font-medium text-gray-300">GitHub Link</label>
           <input
             type="url"
-            name="githubLink"
+            name="githubURL"
             placeholder="GitHub Repository URL"
-            value={newProject.githubLink}
-            onChange={(e) => setNewProject({ ...newProject, githubLink: e.target.value })}
+            value={newProject.githubURL || ""}
+            onChange={(e) => setNewProject({ ...newProject, githubURL: e.target.value })}
             className="w-full p-2 bg-gray-700 text-white border border-gray-600 rounded-lg"
           />
         </div>
@@ -97,7 +97,7 @@ const AddProjectModal = ({
             type="text"
             name="techStack"
             placeholder="e.g., React, Node.js, AWS"
-            value={newProject.techStack}
+            value={newProject.techStack || ""}
             onChange={(e) => setNewProject({ ...newProject, techStack: e.target.value })}
             className="w-full p-2 bg-gray-700 text-white border border-gray-600 rounded-lg"
             required
