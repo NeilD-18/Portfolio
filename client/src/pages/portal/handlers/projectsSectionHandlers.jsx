@@ -17,22 +17,27 @@ export const handleFileChange = (e, setNewProject) => {
 };
 
 // **Submit a new project**
-export const handleProjectSubmit = async (newProject, setProjects) => {
+export const handleProjectSubmit = async (e, newProject, setProjects) => {
+  
+ 
+  e.preventDefault()
+  const formData = new FormData();
+  formData.append("title", newProject.title);
+  formData.append("description", newProject.description);
+  formData.append("githubURL", newProject.githubURL);
+  formData.append("techStack", newProject.techStack);
+  if (newProject.projectImage) {
+    formData.append("projectImage", newProject.projectImage);
+  }
+
   try {
-    const formData = new FormData();
-    formData.append("title", newProject.title);
-    formData.append("description", newProject.description);
-    formData.append("githubLink", newProject.githubLink);
-    formData.append("techStack", newProject.techStack);
-    if (newProject.projectImage) {
-      formData.append("projectImage", newProject.projectImage);
-    }
-
-    const response = await axios.post("/projects/add", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
+    const response = await axios.post("/add-project", formData, {
+      headers: { 
+        "Content-Type": "multipart/form-data" 
+      },
     });
-
     setProjects((prevProjects) => [...prevProjects, response.data]);
+    fetchProjects(setProjects)
   } catch (error) {
     console.error("Error submitting new project:", error);
   }
@@ -48,18 +53,21 @@ export const handleUpdateProject = (publicId, projects, setNewProject, setModalI
 };
 
 // **Submit updated project**
-export const handleUpdateProjectSubmit = async (updatedProject, setProjects) => {
+export const handleUpdateProjectSubmit = async (e, updatedProject, setProjects) => {
+  
+  e.preventDefault()
+  const formData = new FormData();
+  formData.append("title", updatedProject.title);
+  formData.append("description", updatedProject.description);
+  formData.append("githubURL", updatedProject.githubURL);
+  formData.append("techStack", updatedProject.techStack);
+  if (updatedProject.projectImage instanceof File) {
+    formData.append("projectImage", updatedProject.projectImage);
+  }
+  
   try {
-    const formData = new FormData();
-    formData.append("title", updatedProject.title);
-    formData.append("description", updatedProject.description);
-    formData.append("githubLink", updatedProject.githubLink);
-    formData.append("techStack", updatedProject.techStack);
-    if (updatedProject.projectImage instanceof File) {
-      formData.append("projectImage", updatedProject.projectImage);
-    }
 
-    await axios.put(`/projects/edit/${updatedProject.publicId}`, formData, {
+    await axios.put(`/projects/update/${updatedProject.publicId}`, formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
 
@@ -68,6 +76,7 @@ export const handleUpdateProjectSubmit = async (updatedProject, setProjects) => 
         project.publicId === updatedProject.publicId ? updatedProject : project
       )
     );
+    fetchProjects(setProjects)
   } catch (error) {
     console.error("Error updating project:", error);
   }

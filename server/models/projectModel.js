@@ -6,7 +6,7 @@ const projectSchema = new mongoose.Schema(
     title: { type: String, required: true },
     description: { type: String, required: true },
     githubURL: { type: String, required: true },
-    techStack: { type: [String], required: true }, // Fixed array declaration
+    techStack: { type: String, required: true }, // Fixed array declaration
     projectImage: { type: String, required: true },
     publicId: { type: String, unique: true, default: uuidv4 }, // Correctly set default
   },
