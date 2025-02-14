@@ -2,7 +2,7 @@ import React from 'react'
 import { motion } from 'framer-motion'; 
 
 import { styles } from '../../styles';
-import { EarthCanvas } from '../../canvas';
+import { EarthCanvas, SpaceManCanvas } from '../../canvas';
 
 
 const Hero = () => {
@@ -21,7 +21,9 @@ const Hero = () => {
      </div>
 
 
-        <EarthCanvas />
+        {/* <EarthCanvas /> */}
+        <SpaceManCanvas />
+     
 
         <div className='absolute xs:bottom-10 bottom-32 w-full flex justify-center items-center'>
           <a href="#about">

@@ -33,9 +33,9 @@ const ServiceCard = ({ index, image }) => (
 const About = () => {
   // State to hold the bio content and service images
   const [bio, setBio] = useState('');
-  const [images, setImages] = useState([null, null, null, null]); // 4 image slots
+  const [images, setImages] = useState([null, null, null, null]); 
 
-  // Fetch the bio and images from the server when the component mounts
+
   useEffect(() => {
     const fetchAboutData = async () => {
       try {
@@ -45,13 +45,13 @@ const About = () => {
 
         // Fetch images
         const imageResponse = await axios.get('/about/images');
-        setImages(imageResponse.data.images || [null, null, null, null]); // Set the fetched images
+        setImages(imageResponse.data.images || [null, null, null, null]); 
       } catch (error) {
         console.error('Error fetching about data:', error);
       }
     };
 
-    fetchAboutData(); // Fetch both bio and images
+    fetchAboutData(); 
   }, []);
 
   return (

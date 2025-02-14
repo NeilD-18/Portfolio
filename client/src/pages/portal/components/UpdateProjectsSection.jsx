@@ -43,27 +43,24 @@ const Projects = () => {
 
   return (
     <div className="p-6 bg-gray-900 min-h-screen rounded-lg">
-      <h2 className="text-4xl font-bold text-white mb-8 text-center">Projects</h2>
+      <h2 className="text-3xl font-bold text-white mb-6">Projects</h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {/* Grid Layout with Minimal Spacing */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {projects.length === 0 ? (
           <p className="text-white text-center col-span-full">
             No projects added yet. Click "+" to add a new project.
           </p>
         ) : (
-          projects.map((project) =>  (
+          projects.map((project) => (
             <div
-              className="p-6 bg-gray-800 text-white border border-gray-700 rounded-xl shadow-md flex flex-col"
+              className="p-6 bg-gray-800 text-white border border-gray-700 rounded-2xl shadow-md flex flex-col w-full"
               key={project.publicId}
             >
-              {/* Image Preview */}
-              <div className="w-full h-[200px] bg-gray-700 rounded-lg flex items-center justify-center overflow-hidden">
+              {/* Image Preview with Updated Dimensions */}
+              <div className="relative w-full h-[230px] bg-gray-700 rounded-xl flex items-center justify-center overflow-hidden">
                 {project.projectImage ? (
-                  <img
-                    src={project.projectImage}
-                    alt={project.title}
-                    className="w-full h-full object-cover"
-                  />
+                  <img src={project.projectImage} alt={project.title} className="w-full h-full object-cover" />
                 ) : (
                   <span className="text-sm text-gray-400">No image uploaded</span>
                 )}
@@ -73,12 +70,12 @@ const Projects = () => {
               <h3 className="text-2xl font-semibold mt-4">{project.title}</h3>
               <p className="text-gray-400 mt-2">{project.description}</p>
 
-              {/* Tech Stack */}
-              <div className="flex flex-wrap gap-2 mt-3">
+              {/* Tech Stack Bubbles */}
+              <div className="flex flex-wrap gap-1 mt-3">
                 {project.techStack.split(", ").map((tech, index) => (
                   <span
                     key={index}
-                    className={`px-3 py-1 rounded-full text-xs font-medium text-white ${
+                    className={`px-2 py-1 rounded-full text-xs font-medium text-white ${
                       techColors[tech] || techColors.Default
                     }`}
                   >
@@ -99,7 +96,7 @@ const Projects = () => {
                     <FontAwesomeIcon icon={faGithub} size="lg" />
                   </a>
                 )}
-                <div className="flex space-x-4">
+                <div className="flex space-x-3">
                   <button
                     onClick={() =>
                       handleUpdateProject(
