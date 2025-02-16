@@ -24,6 +24,7 @@ module.exports = {
       },
       backgroundImage: {
         "hero-pattern": "url('/src/assets/herobg.webp')",
+        "purplehue": "url('/src/assets/purplehue.png')"
       },
     },
   },
