@@ -13,7 +13,7 @@ const SpaceMan = ({isMobile}) => {
         object={spaceman.scene} 
         scale={isMobile ? 0.5: 0.75} 
         position={[0, isMobile ? -2.5 : -3, 0]} // Lower model
-        rotation-y={2} />
+        rotation-y={11} />
       );
 }
 
