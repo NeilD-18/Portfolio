@@ -34,6 +34,7 @@ const Projects = () => {
     techStack: "",
     projectImage: null,
     publicId: null,
+    pinned: false, // ✅ Track pinned state
   });
 
   // Fetch existing projects on mount
@@ -45,83 +46,98 @@ const Projects = () => {
     <div className="p-6 bg-gray-900 min-h-screen rounded-lg">
       <h2 className="text-3xl font-bold text-white mb-6">Projects</h2>
 
-      {/* Grid Layout with Minimal Spacing */}
+      {/* Grid Layout with Pinned Projects First */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {projects.length === 0 ? (
           <p className="text-white text-center col-span-full">
             No projects added yet. Click "+" to add a new project.
           </p>
         ) : (
-          projects.map((project) => (
-            <div
-              className="p-6 bg-gray-800 text-white border border-gray-700 rounded-2xl shadow-md flex flex-col w-full"
-              key={project.publicId}
-            >
-              {/* Image Preview with Updated Dimensions */}
-              <div className="relative w-full h-[230px] bg-gray-700 rounded-xl flex items-center justify-center overflow-hidden">
-                {project.projectImage ? (
-                  <img src={project.projectImage} alt={project.title} className="w-full h-full object-cover" />
-                ) : (
-                  <span className="text-sm text-gray-400">No image uploaded</span>
-                )}
-              </div>
+          projects
+            .slice()
+            .sort((a, b) => b.pinned - a.pinned) // ✅ Pinned projects first
+            .map((project) => (
+              <div
+                className={`p-6 bg-gray-800 text-white border border-gray-700 rounded-2xl shadow-md flex flex-col w-full ${
+                  project.pinned ? "border-yellow-500" : ""
+                }`}
+                key={project.publicId}
+              >
+                {/* Image Preview */}
+                <div className="relative w-full h-[230px] bg-gray-700 rounded-xl flex items-center justify-center overflow-hidden">
+                  {project.projectImage ? (
+                    <img src={project.projectImage} alt={project.title} className="w-full h-full object-cover" />
+                  ) : (
+                    <span className="text-sm text-gray-400">No image uploaded</span>
+                  )}
+                </div>
 
-              {/* Project Details */}
-              <h3 className="text-2xl font-semibold mt-4">{project.title}</h3>
-              <p className="text-gray-400 mt-2">{project.description}</p>
+                {/* Project Details */}
+                <h3 className="text-2xl font-semibold mt-4">{project.title}</h3>
+                <p className="text-gray-400 mt-2">{project.description}</p>
 
-              {/* Tech Stack Bubbles */}
-              <div className="flex flex-wrap gap-1 mt-3">
-                {project.techStack.split(", ").map((tech, index) => (
-                  <span
-                    key={index}
-                    className={`px-2 py-1 rounded-full text-xs font-medium text-white ${
-                      techColors[tech] || techColors.Default
-                    }`}
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
+                {/* Tech Stack Bubbles */}
+                <div className="flex flex-wrap gap-1 mt-3">
+                  {project.techStack.split(", ").map((tech, index) => (
+                    <span
+                      key={index}
+                      className={`px-2 py-1 rounded-full text-xs font-medium text-white ${
+                        techColors[tech] || techColors.Default
+                      }`}
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
 
-              {/* Action Buttons */}
-              <div className="flex justify-between mt-4">
-                {project.githubURL && (
-                  <a
-                    href={project.githubURL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-400 hover:text-white"
-                  >
-                    <FontAwesomeIcon icon={faGithub} size="lg" />
-                  </a>
-                )}
-                <div className="flex space-x-3">
-                  <button
-                    onClick={() =>
-                      handleUpdateProject(
-                        project.publicId,
-                        projects,
-                        setNewProject,
-                        setModalIsOpen
-                      )
-                    }
-                    className="text-blue-400 hover:text-blue-300"
-                  >
-                    <FontAwesomeIcon icon={faEdit} />
-                  </button>
-                  <button
-                    onClick={() =>
-                      handleDeleteProject(project.publicId, setProjects, projects)
-                    }
-                    className="text-red-400 hover:text-red-300"
-                  >
-                    <FontAwesomeIcon icon={faTrash} />
-                  </button>
+                {/* Action Buttons */}
+                <div className="flex justify-between mt-4">
+                  {project.githubURL && (
+                    <a
+                      href={project.githubURL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-400 hover:text-white"
+                    >
+                      <FontAwesomeIcon icon={faGithub} size="lg" />
+                    </a>
+                  )}
+                  <div className="flex space-x-3">
+                    <button
+                      onClick={() =>
+                        handleUpdateProject(
+                          project.publicId,
+                          projects,
+                          setNewProject,
+                          setModalIsOpen
+                        )
+                      }
+                      className="text-blue-400 hover:text-blue-300"
+                    >
+                      <FontAwesomeIcon icon={faEdit} />
+                    </button>
+                    <button
+                      onClick={() =>
+                        handleDeleteProject(project.publicId, setProjects, projects)
+                      }
+                      className="text-red-400 hover:text-red-300"
+                    >
+                      <FontAwesomeIcon icon={faTrash} />
+                    </button>
+                    {/* Pin Button */}
+                    <button
+                      onClick={() => alert("Pin functionality coming soon!")} // Placeholder function
+                      className={`text-yellow-400 hover:text-yellow-300 ${
+                        project.pinned ? "opacity-100" : "opacity-50"
+                      }`}
+                      title={project.pinned ? "Unpin Project" : "Pin Project"}
+                    >
+                      📌
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))
+            ))
         )}
       </div>
 
