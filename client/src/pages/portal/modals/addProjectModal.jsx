@@ -1,4 +1,7 @@
 import Modal from 'react-modal';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 
 const AddProjectModal = ({
   modalIsOpen,
@@ -21,6 +24,8 @@ const AddProjectModal = ({
       githubURL: "",
       techStack: '',
       projectImage: null,
+      category: '', // Default category
+      createdAt: null,
       publicId: null,
     });
   };
@@ -103,6 +108,35 @@ const AddProjectModal = ({
             required
           />
         </div>
+
+        {/* Project Category Selector */}
+        <div>
+          <label className="block text-sm font-medium text-gray-300">Category</label>
+          <select
+            name="category"
+            value={newProject.category}
+            onChange={(e) => setNewProject({ ...newProject, category: e.target.value })}
+            className="w-full p-2 bg-gray-700 text-white border border-gray-600 rounded-lg"
+          >
+            <option value="SWE">SWE</option>
+            <option value="Quant">Quant</option>
+            <option value="AI">AI</option>
+
+          </select>
+        </div>
+
+        {/* Created At Date Selector */}
+        <div>
+          <label className="block text-sm font-medium text-gray-300">Project Date</label>
+          <DatePicker
+            selected={newProject.createdAt ? new Date(newProject.createdAt) : null}
+            onChange={(date) => setNewProject({ ...newProject, createdAt: date })}
+            dateFormat="MM/yyyy"  // Display only Month & Year
+            showMonthYearPicker  // Enable Month-Year picker mode
+            className="w-full p-2 bg-gray-700 text-white border border-gray-600 rounded-lg"
+          />
+        </div>
+
 
         {/* Existing Project Image (for editing mode) */}
         {isEditing && newProject.projectImage && (

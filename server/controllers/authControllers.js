@@ -10,6 +10,7 @@ import Project from "../models/projectModel.js";
 
 
 
+
 const test = (req, res) => { 
     res.json("test works");
    
@@ -442,13 +443,14 @@ const getExperienceImage = async (req, res) => {
 const addProject = async (req, res) => { 
     try {
         console.log(req.body)
-        const { title, description, githubURL, techStack } = req.body;
+        const { title, description, githubURL, techStack, category, createdAt } = req.body;
         
+        console.log(title, description, githubURL, techStack, category, createdAt)
 
         console.log('Uploaded file:', req.file);
 
     
-        if (!title || !description || !githubURL || !techStack   ) {
+        if (!title || !description || !githubURL || !techStack || !category || !createdAt  ) {
             return res.status(400).json({ error: "All fields are required" });
         }
         
@@ -468,6 +470,8 @@ const addProject = async (req, res) => {
             description: description,
             githubURL: githubURL,
             techStack: techStack,
+            category: category, 
+            createdAt: createdAt ? new Date(createdAt) : new Date(), 
             projectImage: projectPictureKey,
             publicId: uuidv4()
          })
@@ -489,14 +493,14 @@ const updateProject = async (req,res) => {
 
         const { publicId } = req.params
 
-        const { title,  description, githubURL, techStack } = req.body
+        const { title,  description, githubURL, techStack, category, createdAt } = req.body
 
         console.log("Received update request for Project ID:", publicId);
         console.log("Received request body:", req.body);
         console.log("Received file:", req.file ? req.file.originalname : "No file uploaded");
 
 
-        if (!title, !description, !githubURL, !techStack) { 
+        if (!title, !description, !githubURL, !techStack, !category, !createdAt) { 
             console.log("All Arguements not given")
             return res.status(400).json({error: "All fields are required"})
         }
@@ -533,6 +537,8 @@ const updateProject = async (req,res) => {
                 description,
                 githubURL,
                 techStack,
+                category, 
+                createdAt, 
                 projectImage: projectPictureKey
 
             },
