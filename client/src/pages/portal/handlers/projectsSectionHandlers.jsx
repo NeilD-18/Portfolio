@@ -26,6 +26,8 @@ export const handleProjectSubmit = async (e, newProject, setProjects) => {
   formData.append("description", newProject.description);
   formData.append("githubURL", newProject.githubURL);
   formData.append("techStack", newProject.techStack);
+  formData.append("category", newProject.category)
+  formData.append("createdAt", newProject.createdAt.toISOString().slice(0, 7))
   if (newProject.projectImage) {
     formData.append("projectImage", newProject.projectImage);
   }
@@ -56,11 +58,15 @@ export const handleUpdateProject = (publicId, projects, setNewProject, setModalI
 export const handleUpdateProjectSubmit = async (e, updatedProject, setProjects) => {
   
   e.preventDefault()
+  console.log(updatedProject.createdAt)
+
   const formData = new FormData();
   formData.append("title", updatedProject.title);
   formData.append("description", updatedProject.description);
   formData.append("githubURL", updatedProject.githubURL);
   formData.append("techStack", updatedProject.techStack);
+  formData.append("category", updatedProject.category)
+  formData.append("createdAt", new Date(updatedProject.createdAt).toISOString().slice(0, 7))
   if (updatedProject.projectImage instanceof File) {
     formData.append("projectImage", updatedProject.projectImage);
   }
