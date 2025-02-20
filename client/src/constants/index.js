@@ -27,15 +27,19 @@ export const navLinks = [
       id: "work",
       title: "Experience",
     },
+    { 
+      id: "projects",
+      title: "Projects",  
+    },
     {
       id: "contact",
       title: "Contact",
     },
     { 
-      id: "blog",
-      title: "Blog",  
+      id: "resume",
+      title: "Resume",  
     },
-
+   
 ];
   
 const services = [
