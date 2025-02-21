@@ -10,7 +10,7 @@ import { handleFetchProjects } from "./handlers/projectSectionHandlers";
 import { techColors } from "../../constants";
 
 /* -------------------------- PROJECT CARD COMPONENT -------------------------- */
-const ProjectCard = ({ index, project }) => {
+export const ProjectCard = ({ index, project }) => {
   // Temporarily render without motion and Tilt for debugging
   return (
     <div className="bg-tertiary p-5 rounded-2xl sm:w-[360px] w-full">
@@ -23,7 +23,7 @@ const ProjectCard = ({ index, project }) => {
         <div className="absolute inset-0 flex justify-end m-3">
           <div
             onClick={() => window.open(project.githubURL, "_blank")}
-            className="w-10 h-10 rounded-full flex justify-center items-center cursor-pointer bg-black bg-opacity-50"
+            className="w-10 h-10 rounded-full flex justify-center items-center cursor-pointer bg-black bg-opacity-75 hover:bg-opacity-100 transition duration-300 "
           >
             <img
               src={github}

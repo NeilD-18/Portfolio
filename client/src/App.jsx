@@ -5,6 +5,7 @@ import { Toaster } from 'react-hot-toast';
 import { About, Contact, Experience, Feedbacks, Hero, Navbar, Tech, Works, StarsCanvas  } from './pages/main';
 import { Portal } from './pages/portal/components';
 import LoginPage from './pages/login/LoginPage';
+import ProjectArchive from './pages/project_archive/ProjectArchive';
 import PrivateRoutes from './utils/privateRoutes';
 import { UserContextProvider } from '../context/userContext';
 import { AuthProvider } from '../context/authContext';
@@ -46,6 +47,7 @@ const App = () => {
                 </UserContextProvider>
               } />
             </Route>
+            <Route path="/projects-archive" element={ <ProjectArchive />} />
           </Routes>
         </div>
       </BrowserRouter>
