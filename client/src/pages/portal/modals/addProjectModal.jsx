@@ -24,7 +24,7 @@ const AddProjectModal = ({
       githubURL: "",
       techStack: '',
       projectImage: null,
-      category: '', // Default category
+      category: 'SWE', // Default category
       createdAt: null,
       publicId: null,
     });

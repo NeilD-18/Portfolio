@@ -1,4 +1,6 @@
 import axios from "axios";
+import { maxPinnedProjectsLength } from "../../../constants";
+import toast from "react-hot-toast";
 
 // **Fetch all projects from the database**
 export const fetchProjects = async (setProjects) => {
@@ -54,6 +56,60 @@ export const handleUpdateProject = (publicId, projects, setNewProject, setModalI
   }
 };
 
+
+export const handlePinClick = async (e, project, projects, setProjects) => { 
+
+  e.preventDefault()
+
+  const currentPinned = projects.filter((proj) => proj.pinned).length; 
+
+  if (!project.pinned && currentPinned >= maxPinnedProjectsLength) { 
+      toast("6 projects already pinned, please remove one",{
+        icon: '❌',
+        style: {
+          borderRadius: '10px',
+          background: '#333',
+          color: '#fff',
+        },
+      })
+      return; 
+  }
+
+  // ✅ Flip pinned state only for this project
+  const newPinnedValue = !project.pinned
+
+  console.log(newPinnedValue)
+
+  try {
+    await axios.put(`/projects/update/${project.publicId}`, { pinned: newPinnedValue }, {
+      headers: { "Content-Type": "application/json" },
+    });
+
+    // ✅ Update the local UI state immediately for better UX
+    setProjects((prevProjects) =>
+      prevProjects.map((proj) =>
+        proj.publicId === project.publicId ? { ...proj, pinned: newPinnedValue } : proj
+      )
+    );
+
+    toast(newPinnedValue ? "Project pinned!" : "Project unpinned!", {
+      icon: '✅',
+      style: {
+        borderRadius: '10px',
+        background: '#333',
+        color: '#fff',
+      },
+    });
+  } catch (error) {
+    console.error("Error updating pin status:", error);
+    toast("Failed to update pin status");
+  }
+
+
+}
+
+
+
 // **Submit updated project**
 export const handleUpdateProjectSubmit = async (e, updatedProject, setProjects) => {
   
@@ -67,6 +123,7 @@ export const handleUpdateProjectSubmit = async (e, updatedProject, setProjects) 
   formData.append("techStack", updatedProject.techStack);
   formData.append("category", updatedProject.category)
   formData.append("createdAt", new Date(updatedProject.createdAt).toISOString().slice(0, 7))
+  formData.append("pinned", updatedProject.pinned);
   if (updatedProject.projectImage instanceof File) {
     formData.append("projectImage", updatedProject.projectImage);
   }

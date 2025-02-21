@@ -10,19 +10,10 @@ import {
   handleUpdateProject,
   handleFileChange,
   handleUpdateProjectSubmit,
+  handlePinClick,
 } from "../handlers/projectsSectionHandlers";
+import { techColorsBubbles } from "../../../constants";
 
-const techColors = {
-  React: "bg-blue-600",
-  "Node.js": "bg-green-600",
-  Express: "bg-gray-600",
-  MongoDB: "bg-emerald-600",
-  AWS: "bg-yellow-600",
-  PostgreSQL: "bg-teal-600",
-  TailwindCSS: "bg-sky-600",
-  Python: "bg-indigo-600",
-  Default: "bg-purple-700",
-};
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);
@@ -58,15 +49,29 @@ const Projects = () => {
             .sort((a, b) => b.pinned - a.pinned) // ✅ Pinned projects first
             .map((project) => (
               <div
-                className={`p-6 bg-gray-800 text-white border border-gray-700 rounded-2xl shadow-md flex flex-col w-full ${
-                  project.pinned ? "border-yellow-500" : ""
-                }`}
+                className={`relative p-6 text-white border rounded-2xl shadow-md flex flex-col w-full transition-all duration-300 
+                  ${
+                    project.pinned
+                      ? "border-purple-500 shadow-[0_0_15px_rgba(138,43,226,0.6)] bg-gradient-to-br from-[#1a1a2e] to-[#282846]"
+                      : "border-gray-700 bg-gray-800"
+                  }`}
                 key={project.publicId}
               >
+                {/* Pinned Badge */}
+                {project.pinned && (
+                  <div className="absolute top-0.5 right-1.5 bg-purple-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-md shadow-md animate-pulse">
+                  📌 Pinned
+                  </div>
+                )}
+
                 {/* Image Preview */}
                 <div className="relative w-full h-[230px] bg-gray-700 rounded-xl flex items-center justify-center overflow-hidden">
                   {project.projectImage ? (
-                    <img src={project.projectImage} alt={project.title} className="w-full h-full object-cover" />
+                    <img
+                      src={project.projectImage}
+                      alt={project.title}
+                      className="w-full h-full object-cover"
+                    />
                   ) : (
                     <span className="text-sm text-gray-400">No image uploaded</span>
                   )}
@@ -82,7 +87,7 @@ const Projects = () => {
                     <span
                       key={index}
                       className={`px-2 py-1 rounded-full text-xs font-medium text-white ${
-                        techColors[tech] || techColors.Default
+                        techColorsBubbles[tech] || techColorsBubbles.Default
                       }`}
                     >
                       {tech}
@@ -126,9 +131,11 @@ const Projects = () => {
                     </button>
                     {/* Pin Button */}
                     <button
-                      onClick={() => alert("Pin functionality coming soon!")} // Placeholder function
+                      onClick={(e) =>
+                        handlePinClick(e, project, projects, setProjects)
+                      }
                       className={`text-yellow-400 hover:text-yellow-300 ${
-                        project.pinned ? "opacity-100" : "opacity-50"
+                        project.pinned ? "opacity-100" : "opacity-25"
                       }`}
                       title={project.pinned ? "Unpin Project" : "Pin Project"}
                     >

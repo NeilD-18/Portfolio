@@ -18,6 +18,9 @@ import {
     threejs,
   } from "../assets";
   
+
+export const maxPinnedProjectsLength = 6 
+
 export const navLinks = [
     {
       id: "about",

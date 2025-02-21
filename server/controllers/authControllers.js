@@ -472,6 +472,7 @@ const addProject = async (req, res) => {
             techStack: techStack,
             category: category, 
             createdAt: createdAt ? new Date(createdAt) : new Date(), 
+            pinned: false,
             projectImage: projectPictureKey,
             publicId: uuidv4()
          })
@@ -493,14 +494,14 @@ const updateProject = async (req,res) => {
 
         const { publicId } = req.params
 
-        const { title,  description, githubURL, techStack, category, createdAt } = req.body
+        const { title,  description, githubURL, techStack, category, createdAt, pinned } = req.body
 
         console.log("Received update request for Project ID:", publicId);
         console.log("Received request body:", req.body);
         console.log("Received file:", req.file ? req.file.originalname : "No file uploaded");
 
 
-        if (!title, !description, !githubURL, !techStack, !category, !createdAt) { 
+        if (!title, !description, !githubURL, !techStack, !category, !createdAt, pinned == undefined) { 
             console.log("All Arguements not given")
             return res.status(400).json({error: "All fields are required"})
         }
@@ -539,6 +540,7 @@ const updateProject = async (req,res) => {
                 techStack,
                 category, 
                 createdAt, 
+                pinned,
                 projectImage: projectPictureKey
 
             },
