@@ -9,6 +9,7 @@ const projectSchema = new mongoose.Schema(
     techStack: { type: String, required: true }, // Fixed array declaration
     category: { type: String, required: false},
     createdAt: {type: Date, required: true}, 
+    pinned: {type: Boolean, required: true},  
     projectImage: { type: String, required: true },
     publicId: { type: String, unique: true, default: uuidv4 }, // Correctly set default
   },
