@@ -47,7 +47,7 @@ const ProjectArchive = () => {
         variants={fadeIn("", "", 0.1, 1)}
         className="mt-3 text-gray-400 text-center text-lg max-w-3xl mx-auto leading-[28px]"
       >
-        A complete archive of all the projects I've worked on, showcasing my expertise in software engineering, quantitative finance, and AI development.
+        A complete archive of all the projects I've worked on.
       </motion.p>
 
       {/* Projects Grid */}

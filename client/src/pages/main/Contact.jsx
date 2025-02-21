@@ -109,26 +109,30 @@ const Contact = () => {
           </button>
         </form>
       </motion.div>
-
-      {/* Social Media Links */}
+      {/* Social Media Links with Hover Effects */}
       <div className="mt-6 flex justify-between w-full max-w-lg">
         <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer">
-          <FaLinkedin size={40} className="text-white hover:text-blue-500 transition" />
+          <FaLinkedin size={40} className="text-gray-400 hover:text-blue-500  transition-all duration-300" />
         </a>
         <a href="https://github.com/yourprofile" target="_blank" rel="noopener noreferrer">
-          <FaGithub size={40} className="text-white hover:text-gray-400 transition" />
+          <FaGithub size={40} className="text-gray-400 hover:text-white  transition-all duration-300" />
         </a>
         <a href="https://instagram.com/yourprofile" target="_blank" rel="noopener noreferrer">
-          <FaInstagram size={40} className="text-white hover:text-pink-500 transition" />
+          <FaInstagram size={40} className="text-gray-400 hover:text-pink-500  transition-all duration-300" />
         </a>
         <a href="https://snapchat.com/add/yourprofile" target="_blank" rel="noopener noreferrer">
-          <FaSnapchat size={40} className="text-white hover:text-yellow-500 transition" />
+          <FaSnapchat size={40} className="text-gray-400 hover:text-yellow-500  transition-all duration-300" />
         </a>
         <a href="https://youtube.com/c/yourchannel" target="_blank" rel="noopener noreferrer">
-          <FaYoutube size={40} className="text-white hover:text-red-500 transition" />
+          <FaYoutube size={40} className="text-gray-400 hover:text-red-500  transition-all duration-300" />
         </a>
+      </div>
 
-        
+      {/* FOOTER */}
+      <div className="mt-12 pb-6">
+        <p className="text-gray-500 text-sm text-center flex items-center gap-2">
+          Made with <span className="text-red-500 animate-pulse">❤️</span> by Neil Daterao
+        </p>
       </div>
     </div>
   );
