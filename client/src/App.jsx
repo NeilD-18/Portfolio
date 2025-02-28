@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import axios from 'axios';
 import { Toaster } from 'react-hot-toast';
-import { About, Contact, Experience, Feedbacks, Hero, Navbar, Tech, Works, StarsCanvas  } from './pages/main';
+import { About, Contact, Experience, Hero, Navbar, Works } from './pages/main';
 import { Portal } from './pages/portal/components';
 import LoginPage from './pages/login/LoginPage';
 import ProjectArchive from './pages/project_archive/ProjectArchive';
@@ -30,9 +30,7 @@ const App = () => {
                 </div>
                 <About />
                 <Experience />
-                {/* <Tech /> */}
                 <Works />
-                {/* <Feedbacks /> */}
                 <div className="relative z-0">
                   <Contact />
                 </div>

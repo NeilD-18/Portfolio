@@ -26,7 +26,6 @@ const Contact = () => {
   };
 
   
-
   return (
     <div className="xl:mt-12 flex flex-col items-center gap-10 overflow-hidden">
       <motion.div
