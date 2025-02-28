@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { neil_logo, user } from '../../assets';
-import { Link } from 'react-router-dom';
-import DropdownItem from './DropdownItem';
+// import { Link } from 'react-router-dom';
+// import DropdownItem from './DropdownItem'; only needed if using portal dropdown
+
+
 
 const Logo = () => {
     const [open, setOpen] = useState(false);
@@ -34,11 +36,14 @@ const Logo = () => {
                     Neil &nbsp;<span className="sm:block hidden">Daterao</span>
                 </p>
             </div>
-            <div className={`dropdown-menu ${open ? 'active' : 'inactive'}`}>
+
+            {/* Hide Portal Dropdown */}
+
+            {/* <div className={`dropdown-menu ${open ? 'active' : 'inactive'}`}>
                 <ul className='text-secondary'>
                     <DropdownItem img={user} text="Portal" onClick={setOpen} path="/login" />
                 </ul>
-            </div>
+            </div> */}
         </div>
     );
 };

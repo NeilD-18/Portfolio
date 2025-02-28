@@ -9,9 +9,9 @@ import { fadeIn, textVariant } from "../../utils/motion";
 import { handleFetchProjects } from "./handlers/projectSectionHandlers";
 import { techColors } from "../../constants";
 
-/* -------------------------- PROJECT CARD COMPONENT -------------------------- */
+
 export const ProjectCard = ({ index, project }) => {
-  // Temporarily render without motion and Tilt for debugging
+
   return (
     <div className="bg-tertiary p-5 rounded-2xl sm:w-[360px] w-full">
       <div className="relative w-full h-[230px]">
@@ -55,7 +55,7 @@ export const ProjectCard = ({ index, project }) => {
   );
 };
 
-/* --------------------------- MAIN WORKS COMPONENT --------------------------- */
+
 const Works = () => {
   const [projects, setProjects] = useState([]); 
   const [selectedCategory, setSelectedCategory] = useState("featured");
