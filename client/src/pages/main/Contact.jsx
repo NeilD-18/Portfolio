@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import emailjs from "@emailjs/browser";
 import { socialPlatformsHover } from "../../constants";
 import { styles } from '../../styles';
 import { SectionWrapper } from '../../hoc';
