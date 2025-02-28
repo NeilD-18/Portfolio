@@ -1,14 +1,14 @@
 import userModel from "../models/userModel.js";
-import About from "../models/aboutModel.js";
 import utils from "../utils/encrypt.js"
 import jwt from "jsonwebtoken"; 
 
+
+
+
 const test = (req, res) => { 
     res.json("test works");
-   
 }
 
-//Login Endpoint
 const loginUser = async (req, res) => { 
     try { 
         const { username, password } = req.body;
@@ -43,10 +43,6 @@ const loginUser = async (req, res) => {
 }
 
 
-
-
-
-//Register Endpoint
 const registerUser = async (req, res) => {
     try {
         const { username, password } = req.body; 
@@ -85,7 +81,6 @@ const registerUser = async (req, res) => {
     }
 }
 
-//logout user endpoint
 const logoutUser = (req, res) => {
     res.cookie('token', '', { httpOnly: true, expires: new Date(0) }).json({ message: 'Logged out successfully' });
 };
@@ -104,57 +99,13 @@ const getProfile = (req,res) => {
     }
 }
 
-
-// Controller to get the bio
-const getBio = async (req, res) => {
-    try {
-        const bio = await About.findOne();
-        if (!bio) {
-            return res.status(404).json({ message: 'Bio not found' });
-        }
-        res.status(200).json(bio);
-    } catch (error) {
-        console.error('Error fetching bio:', error);
-        res.status(500).json({ message: 'Server error' });
-    }
-};
-
-// Controller to update the bio
-const updateBio = async (req, res) => {
-    const { about } = req.body;
-
-    if (!about) {
-        return res.status(400).json({ message: 'About field is required' });
-    }
-
-    try {
-        let bio = await About.findOne();
-
-        if (bio) {
-            bio.about = about;
-            bio = await bio.save();
-        } else {
-            bio = new About({ about });
-            bio = await bio.save();
-        }
-
-        res.status(200).json(bio);
-    } catch (error) {
-        console.error('Error updating bio:', error);
-        res.status(500).json({ message: 'Server error' });
-    }
-};
-
-const addExperience = (req, res) => { 
-
-}
-
-const deleteExperience = (req, res) => { 
-
-}
-
-const editExperience = (req, res) => { 
     
-}
 
-export default { test, registerUser, loginUser, getProfile, logoutUser, getBio, updateBio }
+export default { 
+    test, 
+    registerUser, 
+    loginUser, 
+    getProfile, 
+    logoutUser, 
+
+}

@@ -1,12 +1,13 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faEnvelope, faBriefcase, faCog } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faBriefcase, faCode, faContactCard} from '@fortawesome/free-solid-svg-icons';
 
 const Sidebar = ({ sections, setCurrentSection }) => {
   const sectionIcons = {
     About: faUser,
     Experiences: faBriefcase,
-    Contact: faEnvelope
+    Contact: faContactCard,
+    Projects: faCode
   };
 
   return (

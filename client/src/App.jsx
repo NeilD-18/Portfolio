@@ -2,9 +2,10 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import axios from 'axios';
 import { Toaster } from 'react-hot-toast';
-import { About, Contact, Experience, Feedbacks, Hero, Navbar, Tech, Works, StarsCanvas  } from './pages/main';
+import { About, Contact, Experience, Hero, Navbar, Works } from './pages/main';
 import { Portal } from './pages/portal/components';
 import LoginPage from './pages/login/LoginPage';
+import ProjectArchive from './pages/project_archive/ProjectArchive';
 import PrivateRoutes from './utils/privateRoutes';
 import { UserContextProvider } from '../context/userContext';
 import { AuthProvider } from '../context/authContext';
@@ -23,18 +24,15 @@ const App = () => {
           <Routes>
             <Route path="/" element={
               <>
-                <div className="bg-hero-pattern bg-cover bg-no-repeat bg-center">
+                <div className="bg-purplehue bg-cover bg-no-repeat bg-center">
                   <Navbar />
                   <Hero />
                 </div>
                 <About />
                 <Experience />
-                <Tech />
                 <Works />
-                <Feedbacks />
                 <div className="relative z-0">
                   <Contact />
-                  <StarsCanvas />
                 </div>
               </>
             } />
@@ -46,6 +44,7 @@ const App = () => {
                 </UserContextProvider>
               } />
             </Route>
+            <Route path="/projects-archive" element={ <ProjectArchive />} />
           </Routes>
         </div>
       </BrowserRouter>
