@@ -1,14 +1,14 @@
 import express from "express";
-import controllerFunctions from "../controllers/authControllers.js";
+import aboutControllers from "../controllers/aboutControllers.js";
 import upload from "../middleware/upload.js";
 
 const router = express.Router();
 
 //About Routes
-router.get("/about", controllerFunctions.getBio)
-router.put("/about", controllerFunctions.updateBio)
-router.get('/about/image/:key', controllerFunctions.getAboutImage)
-router.get('/about/images', controllerFunctions.getAboutImages)
-router.post('/about/update-image', upload.single("file"), controllerFunctions.updateAboutImage)
+router.get("/about", aboutControllers.getBio)
+router.put("/about", aboutControllers.updateBio)
+router.get('/about/image/:key', aboutControllers.getAboutImage)
+router.get('/about/images', aboutControllers.getAboutImages)
+router.post('/about/update-image', upload.single("file"), aboutControllers.updateAboutImage)
 
 export default router

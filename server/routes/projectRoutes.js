@@ -1,15 +1,14 @@
 import express from "express";
-import multer from "multer";
-import controllerFunctions from "../controllers/authControllers.js";
+import projectsControllers from "../controllers/projectsControllers.js";
 import upload from "../middleware/upload.js";
 
 const router = express.Router();
 
 //Project Routes
-router.get('/projects', controllerFunctions.getProjects);
-router.get('/projects/image/:key', controllerFunctions.getProjectImage);
-router.post('/add-project', upload.single('projectImage'), controllerFunctions.addProject)
-router.put('/projects/update/:publicId', upload.single('projectImage'), controllerFunctions.updateProject)
-router.delete('/projects/delete/:publicId', controllerFunctions.deleteProject)
+router.get('/projects', projectsControllers.getProjects);
+router.get('/projects/image/:key', projectsControllers.getProjectImage);
+router.post('/add-project', upload.single('projectImage'), projectsControllers.addProject)
+router.put('/projects/update/:publicId', upload.single('projectImage'), projectsControllers.updateProject)
+router.delete('/projects/delete/:publicId', projectsControllers.deleteProject)
 
 export default router
