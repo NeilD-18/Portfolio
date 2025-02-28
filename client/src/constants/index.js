@@ -17,9 +17,28 @@ import {
     docker,
     threejs,
   } from "../assets";
+  import { faLinkedin, faGithub, faInstagram, faSnapchat, faYoutube } from "@fortawesome/free-brands-svg-icons";
+  import { FaLinkedin, FaGithub, FaInstagram, FaSnapchat, FaYoutube } from "react-icons/fa";
   
 
 export const maxPinnedProjectsLength = 6 
+
+export const socialPlatforms = {
+  linkedin: { baseUrl: "https://linkedin.com/in/", icon: faLinkedin, label: "LinkedIn", color: "text-blue-500" },
+  github: { baseUrl: "https://github.com/", icon: faGithub, label: "GitHub", color: "text-gray-400" },
+  instagram: { baseUrl: "https://instagram.com/", icon: faInstagram, label: "Instagram", color: "text-pink-500" },
+  snapchat: { baseUrl: "https://snapchat.com/add/", icon: faSnapchat, label: "Snapchat", color: "text-yellow-500" },
+  youtube: { baseUrl: "https://youtube.com/@", icon: faYoutube, label: "YouTube", color: "text-red-500" },
+};
+
+export const socialPlatformsHover = {
+  linkedin: { baseUrl: "https://linkedin.com/in/", icon: FaLinkedin, color: "hover:text-blue-500" },
+  github: { baseUrl: "https://github.com/", icon: FaGithub, color: "hover:text-white" },
+  instagram: { baseUrl: "https://instagram.com/", icon: FaInstagram, color: "hover:text-pink-500" },
+  snapchat: { baseUrl: "https://snapchat.com/add/", icon: FaSnapchat, color: "hover:text-yellow-500" },
+  youtube: { baseUrl: "https://youtube.com/@", icon: FaYoutube, color: "hover:text-red-500" },
+};
+
 
 export const navLinks = [
     {
@@ -38,12 +57,12 @@ export const navLinks = [
       id: "contact",
       title: "Contact",
     },
-    { 
-      id: "resume",
-      title: "Resume",  
-    },
+   
    
 ];
+
+
+export const portalSections = ["About", "Experiences", "Projects", "Contact" ]
   
 const services = [
     {

@@ -23,7 +23,7 @@ const ProjectArchive = () => {
   );
 
   return (
-    <div className="min-h-screen bg-[#0d0d0d] p-6 flex flex-col items-center">
+    <div className="min-h-screen bg-primary p-6 flex flex-col items-center">
       {/* Navigation Back to Home */}
       <motion.div
         initial={{ opacity: 0, x: -20 }}

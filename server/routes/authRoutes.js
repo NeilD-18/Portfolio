@@ -54,6 +54,12 @@ router.post('/add-project', upload.single('projectImage'), controllerFunctions.a
 router.put('/projects/update/:publicId', upload.single('projectImage'), controllerFunctions.updateProject)
 router.delete('/projects/delete/:publicId', controllerFunctions.deleteProject)
 
+
+//Contact Routes
+router.get('/contact', controllerFunctions.getContact)
+router.put('/update-contact', upload.single('resume'), controllerFunctions.updateContact)
+
+
 export default router
 
  
