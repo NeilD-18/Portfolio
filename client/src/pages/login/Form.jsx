@@ -21,9 +21,9 @@ const Form = () => {
       loginUser(e, data, navigate, login);
     }
 
-    const handleRegister = async (e) => { 
-      registerUser(e, data, navigate);
-    }
+    // const handleRegister = async (e) => { 
+    //   registerUser(e, data, navigate);
+    // }
 
     return (
     <form onSubmit={handleLogin}>

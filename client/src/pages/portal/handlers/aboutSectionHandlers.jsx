@@ -44,3 +44,43 @@ export const handleFetchAboutText = async (setAboutText) => {
         console.error('Failed to fetch About text', error);
     }
 };
+
+
+export const handleFetchAboutImages = async (setImages) => {
+    try {
+      const response = await axios.get("/about/images"); 
+      setImages(response.data.images || [null, null, null, null]); 
+    } catch (error) {
+      console.error("Error fetching images:", error);
+    }
+};
+
+export const handleImageUpload = async (event, index, setRefresh) => {
+    const file = event.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("index", index); // Specify the slot index
+
+      try {
+        const response = await axios.post("/about/update-image", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        console.log("Image updated successfully:", response.data);
+        setRefresh((prev) => !prev); // Toggle refresh to re-trigger useEffect
+      } catch (error) {
+        console.error("Error updating image:", error);
+      }
+    }
+  };
+
+  export const handleSquareClick = (index, setRefresh) => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.onchange = (e) => handleImageUpload(e, index, setRefresh);
+    input.click();
+  };
+
+
+
