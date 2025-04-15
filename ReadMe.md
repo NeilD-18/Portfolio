@@ -107,8 +107,3 @@ This setup provides a simple yet robust production environment with secure, perf
 
 ---
 
-rsync -avz --exclude 'node_modules' --exclude '.git' --exclude '.env' \
--e "ssh -i ~/.ssh/ne-hypernova.pem" \
-. ubuntu@ec2-34-203-243-196.compute-1.amazonaws.com:~/app
-
-ssh -i "ne-hypernova.pem" ubuntu@ec2-34-203-243-196.compute-1.amazonaws.com
