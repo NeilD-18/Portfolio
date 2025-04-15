@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 import { styles } from '../../styles'; 
 import { navLinks } from '../../constants';
 import { menu, close } from '../../assets';
-import axios from 'axios';
 import Logo from "./Logo"; 
 import DropdownItem from './DropdownItem';
+import { getResume } from './handlers/navbarHandlers';
 
 const Navbar = () => {
   const [active, setActive] = useState('');
@@ -15,17 +15,7 @@ const Navbar = () => {
 
   // Fetch resume URL from backend
   useEffect(() => {
-    const getResume = async () => { 
-      try {
-        const { data } = await axios.get("/contact");
-        if (data.resumeUrl) {
-          setResumeUrl(data.resumeUrl);
-        }
-      } catch (error) {
-        console.error("Error fetching resume:", error);
-      }
-    };
-    getResume();
+    getResume(setResumeUrl);
   }, []);
 
   return (

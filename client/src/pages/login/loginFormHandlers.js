@@ -31,7 +31,7 @@ export const registerUser = async (e, data, navigate ) => {
     e.preventDefault();
     const { username, password } = data;
     try {
-      const response = await axios.post('/register', { username, password });
+      const response = await axios.post('/api/register', { username, password });
       const { data: responseData } = response;
 
       if (responseData.error) {

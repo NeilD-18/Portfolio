@@ -4,7 +4,7 @@ import toast from 'react-hot-toast'; // Assuming you're using react-hot-toast fo
 export const handleAboutTextUpdate = async (newAboutText, setAboutText) => {
     try {
         
-        const response = await axios.put('/about', {
+        const response = await axios.put('/api/about', {
             about: newAboutText
         });
 
@@ -38,7 +38,7 @@ export const handleAboutTextUpdate = async (newAboutText, setAboutText) => {
 export const handleFetchAboutText = async (setAboutText) => {
     try {
         // Perform the GET request to fetch the current about text
-        const response = await axios.get('/about');
+        const response = await axios.get('/api/about');
         setAboutText(response.data.about);
     } catch (error) {
         console.error('Failed to fetch About text', error);
@@ -48,7 +48,7 @@ export const handleFetchAboutText = async (setAboutText) => {
 
 export const handleFetchAboutImages = async (setImages) => {
     try {
-      const response = await axios.get("/about/images"); 
+      const response = await axios.get("/api/about/images"); 
       setImages(response.data.images || [null, null, null, null]); 
     } catch (error) {
       console.error("Error fetching images:", error);
@@ -63,7 +63,7 @@ export const handleImageUpload = async (event, index, setRefresh) => {
       formData.append("index", index); // Specify the slot index
 
       try {
-        const response = await axios.post("/about/update-image", formData, {
+        const response = await axios.post("/api/about/update-image", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
         console.log("Image updated successfully:", response.data);

@@ -74,7 +74,7 @@ const getAboutImages = async(req,res) => {
       
       about.images.forEach((key, index) => {
         images[index] = key
-          ? `${req.protocol}://${req.get("host")}/about/image/${encodeURIComponent(key)}`
+          ? `${req.protocol}://${req.get("host")}/api/about/image/${encodeURIComponent(key)}`
           : null;
       });
   

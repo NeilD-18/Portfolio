@@ -40,11 +40,11 @@ const About = () => {
     const fetchAboutData = async () => {
       try {
         // Fetch bio
-        const bioResponse = await axios.get('/about');
+        const bioResponse = await axios.get('/api/about');
         setBio(bioResponse.data.about);
 
         // Fetch images
-        const imageResponse = await axios.get('/about/images');
+        const imageResponse = await axios.get('/api/about/images');
         setImages(imageResponse.data.images || [null, null, null, null]); 
       } catch (error) {
         console.error('Error fetching about data:', error);

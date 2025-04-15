@@ -22,7 +22,7 @@ export const handleExperienceSubmit = async (e, newExperience, setExperiences, e
 
 
   try {
-      const response = await axios.post('/experiences', form, {
+      const response = await axios.post('/api/experiences', form, {
           headers: {
               'Content-Type': 'multipart/form-data',
           },
@@ -70,7 +70,7 @@ export const handleUpdateExperienceSubmit = async (e, experienceId, newExperienc
   try {
     
     // Send the update request to the backend
-    const response = await axios.put(`/experience/update/${experienceId}`, formData, {
+    const response = await axios.put(`/api/experience/update/${experienceId}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data', // Ensure the correct headers are set for file upload
       },
@@ -123,7 +123,7 @@ export const handleUpdateExperience = (id, experiences, setNewExperience, setMod
 };
 export const handleDeleteExperience = async (publicId, setExperiences, prevExperiences) => {
   try {
-      const response = await axios.delete(`/experiences/${publicId}`);
+      const response = await axios.delete(`/api/experiences/${publicId}`);
       if (response.status === 200) {
           setExperiences(prevExperiences => prevExperiences.filter(exp => exp.publicId !== publicId));
       } else {
@@ -136,7 +136,7 @@ export const handleDeleteExperience = async (publicId, setExperiences, prevExper
 
 export const fetchExperiences = async (setExperiences) => {
   try {
-    const response = await axios.get('/experiences');
+    const response = await axios.get('/api/experiences');
     console.log(response.data);
     setExperiences(response.data); 
   } catch (error) {

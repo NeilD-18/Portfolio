@@ -150,7 +150,7 @@ const getExperiences = async (req, res) => {
         const experiencesWithImageUrls = experiences.map(exp => {
             return {
                 ...exp.toObject(),
-                companyPicture: `${req.protocol}://${req.get('host')}/experience/image/${encodeURIComponent(exp.companyPicture)}`
+                companyPicture: `${req.protocol}://${req.get('host')}/api/experience/image/${encodeURIComponent(exp.companyPicture)}`
             };
         });
 

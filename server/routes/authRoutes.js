@@ -6,14 +6,6 @@ import authenticateToken from "../middleware/auth.js";
 
 const router = express.Router();
 
-//middleware 
-router.use(
-    cors({
-            credentials: true,
-            origin: 'http://localhost:5173'
-
-    })
-)
 
 router.get("/", authControllers.test)
 router.post("/register", authControllers.registerUser)

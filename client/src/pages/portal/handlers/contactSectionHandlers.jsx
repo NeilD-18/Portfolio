@@ -3,7 +3,7 @@ import axios from "axios";
 
 export const handleFetchContactData = async (setSocialLinks, setResumeUrl, setResumeName, socialPlatforms) => {
     try {
-      const { data } = await axios.get("/contact");
+      const { data } = await axios.get("/api/contact");
       if (data) {
         const formattedLinks = {};
         Object.keys(socialPlatforms).forEach((key) => {
@@ -23,7 +23,7 @@ export const handleSave = async (platform, setSocialLinks, setEditing, socialPla
     const updatedLinks = { [usernameKey]: tempUsername };
 
     try {
-      const { data } = await axios.put("/update-contact", updatedLinks);
+      const { data } = await axios.put("/api/update-contact", updatedLinks);
 
       if (data.success) {
         setSocialLinks((prev) => ({
@@ -46,7 +46,7 @@ export const handleResumeUpload = async (selectedFile, setLoading, setResumeUrl,
 
     setLoading(true);
     try {
-      const { data } = await axios.put("/update-contact", formData, {
+      const { data } = await axios.put("/api/update-contact", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 

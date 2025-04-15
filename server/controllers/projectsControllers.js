@@ -178,7 +178,7 @@ const getProjects = async (req,res) => {
             console.log(proj.projectImage)
             return {
                 ...proj.toObject(),
-                projectImage: `${req.protocol}://${req.get('host')}/projects/image/${encodeURIComponent(proj.projectImage)}`
+                projectImage: `${req.protocol}://${req.get('host')}/api/projects/image/${encodeURIComponent(proj.projectImage)}`
             };
 
             

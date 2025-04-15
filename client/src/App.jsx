@@ -10,7 +10,7 @@ import PrivateRoutes from './utils/privateRoutes';
 import { UserContextProvider } from '../context/userContext';
 import { AuthProvider } from '../context/authContext';
 
-axios.defaults.baseURL = 'http://localhost:8081';
+axios.defaults.baseURL = import.meta.env.VITE_API_URL || "https://neildaterao.com";
 axios.defaults.withCredentials = true;
 
 const App = () => {

@@ -4,7 +4,7 @@ export const handleFetchExperiences = async(setExperiences) => {
     
     
     try { 
-        const experienceResponse = await axios.get('/experiences')
+        const experienceResponse = await axios.get('/api/experiences')
         
         const experiences = experienceResponse.data.map((experience) => ({
             ...experience,

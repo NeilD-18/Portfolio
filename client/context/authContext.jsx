@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
     if (!user) {
       const fetchProfile = async () => {
         try {
-          const response = await axios.get('/profile');
+          const response = await axios.get('/api/profile');
           setUser(response.data);
         } catch (error) {
           console.error('No authenticated user');
@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (username, password) => {
     try {
-      const response = await axios.post('/login', { username, password });
+      const response = await axios.post('/api/login', { username, password });
       const { data: responseData } = response;
 
       if (responseData.error) {
@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await axios.post('/logout');
+      await axios.post('/api/logout');
       setUser(null);
       localStorage.removeItem('user'); // Remove user data from localStorage
     } catch (error) {

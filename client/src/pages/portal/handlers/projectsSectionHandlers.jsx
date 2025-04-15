@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 // **Fetch all projects from the database**
 export const fetchProjects = async (setProjects) => {
   try {
-    const response = await axios.get("/projects");
+    const response = await axios.get("/api/projects");
     setProjects(response.data);
   } catch (error) {
     console.error("Error fetching projects:", error);
@@ -35,7 +35,7 @@ export const handleProjectSubmit = async (e, newProject, setProjects) => {
   }
 
   try {
-    const response = await axios.post("/add-project", formData, {
+    const response = await axios.post("/api/add-project", formData, {
       headers: { 
         "Content-Type": "multipart/form-data" 
       },
@@ -81,7 +81,7 @@ export const handlePinClick = async (e, project, projects, setProjects) => {
   console.log(newPinnedValue)
 
   try {
-    await axios.put(`/projects/update/${project.publicId}`, { pinned: newPinnedValue }, {
+    await axios.put(`/api/projects/update/${project.publicId}`, { pinned: newPinnedValue }, {
       headers: { "Content-Type": "application/json" },
     });
 
@@ -130,7 +130,7 @@ export const handleUpdateProjectSubmit = async (e, updatedProject, setProjects) 
   
   try {
 
-    await axios.put(`/projects/update/${updatedProject.publicId}`, formData, {
+    await axios.put(`/api/projects/update/${updatedProject.publicId}`, formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
 
@@ -148,7 +148,7 @@ export const handleUpdateProjectSubmit = async (e, updatedProject, setProjects) 
 // **Delete project**
 export const handleDeleteProject = async (publicId, setProjects, projects) => {
   try {
-    await axios.delete(`/projects/delete/${publicId}`);
+    await axios.delete(`/api/projects/delete/${publicId}`);
     setProjects(projects.filter((project) => project.publicId !== publicId));
   } catch (error) {
     console.error("Error deleting project:", error);

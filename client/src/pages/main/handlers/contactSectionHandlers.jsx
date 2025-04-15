@@ -4,7 +4,7 @@ import emailjs from "@emailjs/browser";
 
 export const handleFetchSocialLinks = async (setSocialLinks, socialPlatformsHover) => {
     try {
-      const { data } = await axios.get("/contact");
+      const { data } = await axios.get("/api/contact");
       const updatedLinks = {};
 
       Object.keys(socialPlatformsHover).forEach((key) => {
