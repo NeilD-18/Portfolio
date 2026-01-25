@@ -13,17 +13,18 @@ import { techColors } from "../../constants";
 export const ProjectCard = ({ index, project }) => {
 
   return (
-    <div className="bg-tertiary p-5 rounded-2xl sm:w-[360px] w-full">
-      <div className="relative w-full h-[230px]">
+    <div className="bg-tertiary p-5 rounded-2xl sm:w-[360px] w-full group hover:bg-tertiary/80 transition-colors duration-300">
+      <div className="relative w-full h-[230px] overflow-hidden rounded-2xl">
         <img
           src={project.projectImage}
           alt={project.title}
+          loading="lazy"
           className="w-full h-full object-cover rounded-2xl"
         />
         <div className="absolute inset-0 flex justify-end m-3">
           <div
             onClick={() => window.open(project.githubURL, "_blank")}
-            className="w-10 h-10 rounded-full flex justify-center items-center cursor-pointer bg-black bg-opacity-75 hover:bg-opacity-100 transition duration-300 "
+            className="w-10 h-10 rounded-full flex justify-center items-center cursor-pointer bg-black/75 hover:bg-[#915EFF] transition-colors duration-300"
           >
             <img
               src={github}
@@ -36,19 +37,19 @@ export const ProjectCard = ({ index, project }) => {
 
       <div className="mt-5">
         <h3 className="text-white font-bold text-[24px]">{project.title}</h3>
-        <p className="mt-2 text-secondary text-[14px]">
+        <p className="mt-2 text-secondary text-[14px] line-clamp-3">
           {project.description}
         </p>
       </div>
 
       <div className="mt-4 flex flex-wrap gap-2">
         {project.techStack.split(", ").map((tech) => (
-          <p
+          <span
             key={`${project.title}-${tech}`}
-            className={`text-[14px] ${techColors[tech] || techColors.Default}`}
+            className={`text-[12px] px-2 py-1 rounded-full bg-black-100/50 ${techColors[tech] || techColors.Default}`}
           >
             #{tech}
-          </p>
+          </span>
         ))}
       </div>
     </div>

@@ -45,7 +45,17 @@ const About = () => {
 
         // Fetch images
         const imageResponse = await axios.get('/api/about/images');
-        setImages(imageResponse.data.images || [null, null, null, null]); 
+        const fetchedImages = imageResponse.data.images || [null, null, null, null];
+        
+        // Preload images in background for faster rendering
+        fetchedImages.forEach((src) => {
+          if (src) {
+            const img = new Image();
+            img.src = src;
+          }
+        });
+        
+        setImages(fetchedImages); 
       } catch (error) {
         console.error('Error fetching about data:', error);
       }
