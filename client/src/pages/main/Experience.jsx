@@ -35,10 +35,10 @@ const ExperienceCard = ({ experience, index }) => {
         background: "#1d1836",
         color: "#fff",
       }}
-      contentArrowStyle={{ borderRight: "7px solid  #232631" }}
+      contentArrowStyle={{ borderRight: "7px solid #232631" }}
       date={formattedDate}
       iconStyle={{
-        background: index % 2 === 0 ? "#E6DEDD" : "#383E56",
+        background: "#fff",
       }}
       icon={
         <div className='flex justify-center items-center w-full h-full overflow-hidden rounded-full'>

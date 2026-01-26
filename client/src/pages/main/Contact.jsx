@@ -1,105 +1,214 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { socialPlatformsHover } from "../../constants";
+import toast from "react-hot-toast";
+import { FaLinkedin, FaGithub, FaInstagram, FaEnvelope, FaArrowRight } from "react-icons/fa";
 import { styles } from '../../styles';
 import { SectionWrapper } from '../../hoc';
-import { slideIn } from '../../utils/motion';
-import { handleFetchSocialLinks } from "./handlers/contactSectionHandlers";
-import { handleContactFormSubmit } from "./handlers/contactSectionHandlers";
+import { textVariant, fadeIn } from '../../utils/motion';
+import { handleFetchSocialLinks, handleFetchResumeUrl } from "./handlers/contactSectionHandlers";
+import { socialPlatformsHover } from "../../constants";
 
+const EMAIL = "ndaterao2@gmail.com";
+
+// Animated gradient border component
+const GradientBorder = ({ children, className = "" }) => (
+  <div className={`relative group ${className}`}>
+    <div className="absolute -inset-[1px] bg-gradient-to-r from-[#915EFF] via-[#00CEA8] to-[#BF61FF] rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm" />
+    <div className="absolute -inset-[1px] bg-gradient-to-r from-[#915EFF] via-[#00CEA8] to-[#BF61FF] rounded-2xl opacity-0 group-hover:opacity-50 transition-opacity duration-500" />
+    {children}
+  </div>
+);
 
 const Contact = () => {
-  const formRef = useRef();
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
-  const [loading, setLoading] = useState(false);
   const [socialLinks, setSocialLinks] = useState({});
+  const [resumeUrl, setResumeUrl] = useState(null);
+  const [copied, setCopied] = useState(false);
 
-  // Fetch contact info from backend
   useEffect(() => {
-    handleFetchSocialLinks(setSocialLinks, socialPlatformsHover)
+    handleFetchSocialLinks(setSocialLinks, socialPlatformsHover);
+    handleFetchResumeUrl(setResumeUrl);
   }, []);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
+  const handleCopyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(EMAIL);
+      setCopied(true);
+      toast("Email copied!", {
+        icon: '✅',
+        style: { borderRadius: '12px', background: '#0a0a0f', color: '#fff', border: '1px solid rgba(255,255,255,0.1)' },
+      });
+      setTimeout(() => setCopied(false), 2000);
+    } catch (error) {
+      toast("Couldn't copy", { icon: '❌' });
+    }
   };
 
-  
+  const linkedinUrl = socialLinks.linkedin || "https://linkedin.com/in/neildaterao";
+  const githubUrl = socialLinks.github;
+
   return (
-    <div className="xl:mt-12 flex flex-col items-center gap-10 overflow-hidden">
-      <motion.div
-        variants={slideIn("left", "tween", 0.2, 1)}
-        className="flex-[0.75] bg-black-100 p-8 rounded-2xl"
-      >
-        <p className={styles.sectionSubText}>Get in touch</p>
-        <h3 className={styles.sectionHeadText}>Contact Me</h3>
-
-        <form ref={formRef} onSubmit={(e) => handleContactFormSubmit(e, setLoading, setForm, form)}  className="mt-8 flex flex-col gap-6">
-          <label className="flex flex-col">
-            <span className="text-white font-medium mb-2">Your Name</span>
-            <input
-              type="text"
-              name="name"
-              value={form.name}
-              onChange={handleChange}
-              placeholder="Enter your name"
-              className="bg-tertiary py-3 px-4 text-white rounded-lg outline-none border-none font-medium"
-              required
-            />
-          </label>
-
-          <label className="flex flex-col">
-            <span className="text-white font-medium mb-2">Your Email</span>
-            <input
-              type="email"
-              name="email"
-              value={form.email}
-              onChange={handleChange}
-              placeholder="Enter your email"
-              className="bg-tertiary py-3 px-4 text-white rounded-lg outline-none border-none font-medium"
-              required
-            />
-          </label>
-
-          <label className="flex flex-col">
-            <span className="text-white font-medium mb-2">Your Message</span>
-            <textarea
-              rows={5}
-              name="message"
-              value={form.message}
-              onChange={handleChange}
-              placeholder="Type your message..."
-              className="bg-tertiary py-3 px-4 text-white rounded-lg outline-none border-none font-medium"
-              required
-            />
-          </label>
-
-          <button
-            type="submit"
-            className="bg-tertiary py-3 px-6 rounded-lg outline-none w-fit text-white font-bold shadow-md hover:bg-opacity-80 transition"
-          >
-            {loading ? "Sending..." : "Send"}
-          </button>
-        </form>
+    <div className="max-w-5xl mx-auto">
+      {/* Header */}
+      <motion.div variants={textVariant()} className="text-center mb-16">
+        <p className={`${styles.sectionSubText}`}>What's next?</p>
+        <h2 className={`${styles.sectionHeadText}`}>
+          Let's <span className="gradient-text-animated">Connect</span>
+        </h2>
+        <motion.p 
+          variants={fadeIn("up", "spring", 0.2, 1)}
+          className="mt-4 text-secondary text-[16px] max-w-xl mx-auto leading-relaxed"
+        >
+          I'm always open to new opportunities, collaborations, or just a good conversation about tech.
+        </motion.p>
       </motion.div>
 
-      {/* Social Media Links with Dynamic Usernames */}
-      <div className="mt-6 flex justify-between w-full max-w-lg">
-        {Object.entries(socialPlatformsHover).map(([key, { icon, color }]) => (
-          socialLinks[key] && (
-            <a key={key} href={socialLinks[key]} target="_blank" rel="noopener noreferrer">
-              {React.createElement(icon, { size: 40, className: `text-gray-400 ${color} transition-all duration-300` })}
-            </a>
-          )
-        ))}
+      {/* Bento Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        
+        {/* LinkedIn - Primary CTA (Large) */}
+        <GradientBorder className="md:col-span-2">
+          <motion.a
+            href={linkedinUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            variants={fadeIn("up", "spring", 0.3, 0.8)}
+            whileHover={{ y: -4 }}
+            className="relative block bg-[#0a0a0f] rounded-2xl p-8 border border-white/5 overflow-hidden"
+          >
+            {/* Background gradient blob */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#0077B5]/20 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2" />
+            
+            <div className="relative flex items-center justify-between">
+              <div className="flex items-center gap-5">
+                <div className="w-16 h-16 rounded-2xl bg-[#0077B5] flex items-center justify-center shadow-lg shadow-[#0077B5]/30">
+                  <FaLinkedin className="text-white text-3xl" />
+                </div>
+                <div>
+                  <p className="text-white/50 text-sm font-medium uppercase tracking-wider">Preferred</p>
+                  <h3 className="text-white text-2xl font-bold mt-1">Connect on LinkedIn</h3>
+                  <p className="text-secondary text-sm mt-1">I respond within 24 hours</p>
+                </div>
+              </div>
+              <div className="hidden sm:flex items-center gap-2 text-white/50 group-hover:text-white transition-colors">
+                <span className="text-sm font-medium">Let's chat</span>
+                <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
+              </div>
+            </div>
+          </motion.a>
+        </GradientBorder>
+
+        {/* Email Card */}
+        <GradientBorder>
+          <motion.div
+            variants={fadeIn("right", "spring", 0.4, 0.8)}
+            className="relative bg-[#0a0a0f] rounded-2xl p-6 border border-white/5 h-full"
+          >
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#915EFF] to-[#BF61FF] flex items-center justify-center flex-shrink-0">
+                <FaEnvelope className="text-white text-xl" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-white/50 text-xs font-medium uppercase tracking-wider">Email</p>
+                <p className="text-white font-mono text-sm mt-2 truncate">{EMAIL}</p>
+              </div>
+            </div>
+            
+            <div className="mt-5 flex gap-2">
+              <motion.button
+                onClick={handleCopyEmail}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className={`flex-1 py-2.5 px-4 rounded-xl text-sm font-medium transition-all ${
+                  copied 
+                    ? 'bg-[#00CEA8]/20 text-[#00CEA8] border border-[#00CEA8]/30' 
+                    : 'bg-white/5 text-white border border-white/10 hover:border-[#915EFF]/50'
+                }`}
+              >
+                {copied ? "Copied!" : "Copy"}
+              </motion.button>
+              <motion.a
+                href={`mailto:${EMAIL}`}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="flex-1 py-2.5 px-4 rounded-xl text-sm font-medium bg-white/5 text-white border border-white/10 hover:border-[#915EFF]/50 transition-all text-center"
+              >
+                Send
+              </motion.a>
+            </div>
+          </motion.div>
+        </GradientBorder>
+
+        {/* GitHub Card */}
+        {githubUrl && (
+          <GradientBorder>
+            <motion.a
+              href={githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              variants={fadeIn("left", "spring", 0.5, 0.8)}
+              whileHover={{ y: -2 }}
+              className="relative block bg-[#0a0a0f] rounded-2xl p-6 border border-white/5 h-full"
+            >
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-xl bg-[#333] flex items-center justify-center flex-shrink-0">
+                  <FaGithub className="text-white text-2xl" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-white/50 text-xs font-medium uppercase tracking-wider">Code</p>
+                  <h3 className="text-white text-lg font-semibold mt-1">View GitHub</h3>
+                  <p className="text-secondary text-sm mt-1">Check out my projects</p>
+                </div>
+              </div>
+              <div className="absolute bottom-6 right-6 text-white/30 group-hover:text-white/60 transition-colors">
+                <FaArrowRight />
+              </div>
+            </motion.a>
+          </GradientBorder>
+        )}
+
+        {/* Other Socials Row */}
+        <motion.div 
+          variants={fadeIn("up", "spring", 0.6, 0.8)}
+          className="md:col-span-2 flex justify-center gap-3 mt-4"
+        >
+          {Object.entries(socialPlatformsHover).map(([key, { icon, color }]) => {
+            if (key === 'linkedin' || key === 'github') return null; // Already shown above
+            if (!socialLinks[key]) return null;
+            
+            return (
+              <motion.a
+                key={key}
+                href={socialLinks[key]}
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ y: -4, scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:border-white/20 transition-all"
+              >
+                {React.createElement(icon, { 
+                  size: 20, 
+                  className: `text-secondary ${color} transition-colors duration-300` 
+                })}
+              </motion.a>
+            );
+          })}
+        </motion.div>
       </div>
 
-      {/* FOOTER */}
-      <div className="mt-12 pb-6">
-        <p className="text-gray-500 text-sm text-center flex items-center gap-2">
-          Made with <span className="text-red-500 animate-pulse">❤️</span> by Neil Daterao
-        </p>
-      </div>
+      {/* Footer */}
+      <motion.div 
+        variants={fadeIn("up", "spring", 0.7, 0.8)}
+        className="mt-20 pt-8 border-t border-white/5"
+      >
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-white/30 text-sm flex items-center gap-2">
+            Built with <span className="text-red-400">♥</span> by Neil Daterao
+          </p>
+          <p className="text-white/20 text-xs">
+            © {new Date().getFullYear()} All rights reserved
+          </p>
+        </div>
+      </motion.div>
     </div>
   );
 };

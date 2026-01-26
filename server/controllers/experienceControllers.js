@@ -174,6 +174,16 @@ const getExperienceImage = async (req, res) => {
         const s3Response = await s3Client.send(command);
 
         res.setHeader('Content-Type', s3Response.ContentType);
+        if (s3Response.ETag) {
+            res.setHeader('ETag', s3Response.ETag);
+            if (req.headers['if-none-match'] === s3Response.ETag) {
+                return res.status(304).end();
+            }
+        }
+        if (s3Response.LastModified) {
+            res.setHeader('Last-Modified', s3Response.LastModified.toUTCString());
+        }
+        res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
         s3Response.Body.pipe(res);
     } catch (error) {
         console.error('Error fetching image from S3:', error.message);

@@ -25,6 +25,10 @@ export const uploadFileToS3 = async (file, folder) => {
         uniqueFileName = `projectImages/${Date.now()}-${file.originalname}`;
     }  else if (folder === 'contact') {
         uniqueFileName = `contactFiles/${Date.now()}-${file.originalname}`;
+    } else if (folder === 'moodboard') {
+        uniqueFileName = `moodboardImages/${Date.now()}-${file.originalname}`;
+    } else if (folder === 'education') {
+        uniqueFileName = `educationImages/${Date.now()}-${file.originalname}`;
     } else {
         throw new Error("Invalid folder specified");
     }
