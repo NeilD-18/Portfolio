@@ -6,29 +6,41 @@ import { styles } from '../../styles';
 import { fadeIn, textVariant } from '../../utils/motion';
 import { SectionWrapper } from '../../hoc';
 
-const ServiceCard = ({ index, image }) => (
-  <Tilt className="xs:w-[250px] w-full">
-    <motion.div
-      variants={fadeIn('right', 'spring', index * 0.5, 0.75)}
-      className="w-full h-[280px]  p-[1px] rounded-[20px] shadow-card overflow-hidden" //green-pink-gradient (commented out)
-    >
-      <div
-        options={{
-          max: 45,
-          scale: 1,
-          speed: 450,
-        }}
-        className="bg-tertiary rounded-[20px] w-full h-full overflow-hidden"
+const ServiceCard = ({ index, image }) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  
+  return (
+    <Tilt className="xs:w-[250px] w-full">
+      <motion.div
+        variants={fadeIn('right', 'spring', index * 0.5, 0.75)}
+        className="w-full h-[280px] p-[1px] rounded-[20px] shadow-card overflow-hidden"
       >
-        <img
-          src={image}
-          alt={`service-${index}`}
-          className="w-full h-full object-cover"
-        />
-      </div>
-    </motion.div>
-  </Tilt>
-);
+        <div
+          options={{
+            max: 45,
+            scale: 1,
+            speed: 450,
+          }}
+          className="bg-tertiary rounded-[20px] w-full h-full overflow-hidden relative"
+        >
+          {/* Skeleton placeholder */}
+          {!imageLoaded && (
+            <div className="absolute inset-0 bg-white/5 animate-pulse rounded-[20px]" />
+          )}
+          
+          <img
+            src={image}
+            alt={`service-${index}`}
+            onLoad={() => setImageLoaded(true)}
+            className={`w-full h-full object-cover transition-opacity duration-500 ${
+              imageLoaded ? 'opacity-100' : 'opacity-0'
+            }`}
+          />
+        </div>
+      </motion.div>
+    </Tilt>
+  );
+};
 
 const About = () => {
   // State to hold the bio content and service images
@@ -68,7 +80,7 @@ const About = () => {
     <>
       <motion.div variants={textVariant()} className="flex flex-col items-center">
         <p className={styles.sectionSubText}>A little bit</p>
-        <h2 className={styles.sectionHeadText}>About Me.</h2>
+        <h2 className={styles.sectionHeadText}>About Me</h2>
 
         <motion.p
           variants={fadeIn('', '', 0.1, 1)}
@@ -78,7 +90,7 @@ const About = () => {
         </motion.p>
       </motion.div>
 
-      <div className="mt-20 flex flex-wrap gap-10">
+      <div className="mt-20 flex flex-wrap gap-10 justify-center">
         {images.map((image, index) => (
           image ? (
             <ServiceCard key={`service-${index}`} index={index} image={image} />

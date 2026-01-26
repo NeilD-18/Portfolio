@@ -46,6 +46,10 @@ export const navLinks = [
       title: "About",
     },
     {
+      id: "education",
+      title: "Education",
+    },
+    {
       id: "work",
       title: "Experience",
     },
@@ -54,13 +58,17 @@ export const navLinks = [
       title: "Projects",  
     },
     {
+      id: "moodboard",
+      title: "Beyond Code",
+    },
+    {
       id: "contact",
       title: "Contact",
     },
 ];
 
 
-export const portalSections = ["About", "Experiences", "Projects", "Contact" ]
+export const portalSections = ["About", "Education", "Experiences", "Projects", "MoodBoard", "Contact"]
   
 const services = [
     {

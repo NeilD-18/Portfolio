@@ -86,53 +86,42 @@ const Works = () => {
 
   const limitedProjects = filteredProjects.slice(0, 6);
 
-  const baseButtonClasses =
-    "px-5 py-2 rounded-full font-semibold text-sm transition-colors duration-300";
-
-  const getButtonClasses = (category) => {
-    const isActive = selectedCategory === category.toLowerCase();
-    return isActive
-      ? `${baseButtonClasses} bg-gradient-to-r from-darkPurple to-obsidian text-white shadow-md hover:brightness-110`
-      : `${baseButtonClasses} bg-darkBlue text-secondary hover:bg-darkBlue/80`;
-  };
+  const categories = [
+    { id: 'featured', label: 'Featured' },
+    { id: 'quant', label: 'Quant' },
+    { id: 'swe', label: 'SWE' },
+    { id: 'ai', label: 'AI' },
+  ];
 
   return (
     <>
       {/* Heading */}
       <motion.div variants={textVariant()}>
         <p className={`${styles.sectionSubText} text-center`}>My work</p>
-        <h2 className={`${styles.sectionHeadText} text-center`}>Projects.</h2>
+        <h2 className={`${styles.sectionHeadText} text-center`}>Projects</h2>
       </motion.div>
 
-      <motion.div variants={textVariant()}>
-        {/* Filter Buttons */}
-        <div className="flex justify-center gap-4 mt-8">
-          <button
-            className={getButtonClasses("featured")}
-            onClick={() => setSelectedCategory("featured")}
-          >
-            Featured
-          </button>
-          <button
-            className={getButtonClasses("quant")}
-            onClick={() => setSelectedCategory("quant")}
-          >
-            Quant
-          </button>
-          <button
-            className={getButtonClasses("swe")}
-            onClick={() => setSelectedCategory("swe")}
-          >
-            SWE
-          </button>
-          <button
-            className={getButtonClasses("ai")}
-            onClick={() => setSelectedCategory("ai")}
-          >
-            AI
-          </button>
+      {/* Filter Buttons - Sleek pill design */}
+      <div className="flex justify-center mt-8">
+        <div className="inline-flex items-center gap-1 p-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
+          {categories.map((cat) => {
+            const isActive = selectedCategory === cat.id;
+            return (
+              <button
+                key={cat.id}
+                onClick={() => setSelectedCategory(cat.id)}
+                className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                  isActive
+                    ? 'bg-gradient-to-r from-[#915EFF] to-[#7a4ee6] text-white shadow-lg'
+                    : 'text-secondary hover:text-white'
+                }`}
+              >
+                {cat.label}
+              </button>
+            );
+          })}
         </div>
-      </motion.div>
+      </div>
 
       {/* Projects Grid */}
       <motion.div

@@ -1,104 +1,159 @@
-import React, { useMemo, useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import axios from "axios";
 
-const SUGGESTED_PROMPTS = [
+const DEFAULT_PROMPTS = [
   "Give me the 30-second overview",
-  "What projects prove backend strength?",
-  "What’s Neil’s basketball background?",
-  "What should I ask Neil in an interview?",
+  "What projects showcase backend skills?",
+  "What's Neil's basketball background?",
+  "What should I ask in an interview?",
 ];
-
-function getMockAnswer(prompt) {
-  const p = prompt.toLowerCase();
-  if (p.includes("30-second") || p.includes("overview")) {
-    return {
-      title: "30-second overview",
-      body:
-        "I’m Neil — a CS & Math student-athlete who builds clean, modern web apps with a focus on real-world impact. I care about performance, polish, and building things that ship.",
-      sources: ["Education", "Projects", "Experience"],
-    };
-  }
-  if (p.includes("backend")) {
-    return {
-      title: "Backend strengths",
-      body:
-        "Look at projects where I designed APIs, worked with databases, and owned data models end-to-end. I like building reliable systems with clear interfaces and good error handling.",
-      sources: ["Projects"],
-    };
-  }
-  if (p.includes("basketball")) {
-    return {
-      title: "Basketball background",
-      body:
-        "Basketball taught me discipline and consistency — same mindset I bring to engineering: show up daily, iterate, and execute under pressure.",
-      sources: ["Mood Board", "About"],
-    };
-  }
-  if (p.includes("interview") || p.includes("ask")) {
-    return {
-      title: "Great interview questions",
-      body:
-        "Ask about a project I owned end-to-end, a tricky bug I debugged, and how being a student-athlete shaped my workflow. I love talking about tradeoffs and real decisions.",
-      sources: ["Projects", "Experience"],
-    };
-  }
-  return {
-    title: "Mock answer",
-    body:
-      "This is a UI mock — next step is wiring it to your portal-backed content so it can answer from your real data with sources.",
-    sources: ["Site Content"],
-  };
-}
 
 const bubble = {
   hidden: { opacity: 0, y: 8, scale: 0.98 },
   show: { opacity: 1, y: 0, scale: 1 },
 };
 
+/**
+ * Parse and render formatted text (bold, bullets, line breaks)
+ */
+const FormattedText = ({ text }) => {
+  if (!text) return null;
+
+  // Split by line breaks first
+  const lines = text.split('\n');
+
+  return (
+    <div className="space-y-2">
+      {lines.map((line, lineIdx) => {
+        // Skip empty lines but preserve spacing
+        if (line.trim() === '') {
+          return <div key={lineIdx} className="h-1" />;
+        }
+
+        // Check if it's a bullet point
+        const isBullet = /^[\s]*[•\-\*]\s/.test(line);
+        const cleanLine = isBullet ? line.replace(/^[\s]*[•\-\*]\s/, '') : line;
+
+        // Parse bold text (**text** or __text__)
+        const parts = cleanLine.split(/(\*\*[^*]+\*\*|__[^_]+__)/g);
+
+        const renderedParts = parts.map((part, partIdx) => {
+          // Check if this part is bold
+          if (/^\*\*[^*]+\*\*$/.test(part) || /^__[^_]+__$/.test(part)) {
+            const boldText = part.replace(/^\*\*|\*\*$|^__|__$/g, '');
+            return (
+              <span key={partIdx} className="font-semibold text-white">
+                {boldText}
+              </span>
+            );
+          }
+          return <span key={partIdx}>{part}</span>;
+        });
+
+        if (isBullet) {
+          return (
+            <div key={lineIdx} className="flex items-start gap-2 pl-1">
+              <span className="text-[#915EFF] mt-1.5 text-[8px]">●</span>
+              <span className="flex-1">{renderedParts}</span>
+            </div>
+          );
+        }
+
+        return (
+          <p key={lineIdx} className="leading-relaxed">
+            {renderedParts}
+          </p>
+        );
+      })}
+    </div>
+  );
+};
+
 export default function AskNeilWidget() {
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [suggestedPrompts, setSuggestedPrompts] = useState(DEFAULT_PROMPTS);
+  const messagesEndRef = useRef(null);
+  
   const [messages, setMessages] = useState(() => [
     {
       id: "intro",
       role: "assistant",
-      content:
-        "Ask me anything about Neil — projects, background, or what to talk about in an interview.",
+      content: "Ask me anything about Neil — **projects**, **experience**, **education**, or what to talk about in an interview.",
       meta: null,
     },
   ]);
 
-  const quickActions = useMemo(
-    () => [
-      { label: "View Resume", onClick: () => window.open("#", "_blank") },
-      {
-        label: "Jump to Contact",
-        onClick: () => document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" }),
-      },
-    ],
-    []
-  );
+  // Fetch suggested prompts on mount
+  useEffect(() => {
+    const fetchPrompts = async () => {
+      try {
+        const response = await axios.get("/api/ask/prompts");
+        if (response.data.prompts?.length) {
+          setSuggestedPrompts(response.data.prompts);
+        }
+      } catch (error) {
+        console.log("Using default prompts");
+      }
+    };
+    fetchPrompts();
+  }, []);
+
+  // Auto-scroll to bottom when new messages arrive
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   const push = (msg) => setMessages((prev) => [...prev, msg]);
 
-  const handlePrompt = (prompt) => {
-    const answer = getMockAnswer(prompt);
+  const handlePrompt = async (prompt) => {
+    // Add user message immediately
     push({ id: `u-${Date.now()}`, role: "user", content: prompt, meta: null });
-    push({
-      id: `a-${Date.now() + 1}`,
-      role: "assistant",
-      content: answer.body,
-      meta: { title: answer.title, sources: answer.sources },
-    });
+    
+    setLoading(true);
+    
+    try {
+      const response = await axios.post("/api/ask", { query: prompt });
+      
+      if (response.data.success && response.data.answer) {
+        const { title, body, sources, isFiltered } = response.data.answer;
+        push({
+          id: `a-${Date.now()}`,
+          role: "assistant",
+          content: body,
+          meta: { title, sources, isFiltered },
+        });
+      } else {
+        push({
+          id: `a-${Date.now()}`,
+          role: "assistant",
+          content: "I couldn't find an answer to that. Try asking about projects, experience, or education!",
+          meta: null,
+        });
+      }
+    } catch (error) {
+      console.error("Error asking Neil:", error);
+      push({
+        id: `a-${Date.now()}`,
+        role: "assistant",
+        content: "Something went wrong. Please try again!",
+        meta: null,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSend = (e) => {
     e.preventDefault();
     const text = draft.trim();
-    if (!text) return;
+    if (!text || loading) return;
     setDraft("");
     handlePrompt(text);
   };
+
 
   return (
     <div className="fixed bottom-6 left-6 z-[60]">
@@ -135,22 +190,25 @@ export default function AskNeilWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.98 }}
             transition={{ duration: 0.2 }}
-            className="w-[340px] sm:w-[380px] rounded-3xl overflow-hidden border border-white/10 bg-primary/90 backdrop-blur-xl shadow-2xl"
+            className="w-[340px] sm:w-[420px] rounded-3xl overflow-hidden border border-white/10 bg-primary/95 backdrop-blur-xl shadow-2xl"
           >
             {/* Header */}
-            <div className="px-5 py-4 flex items-center justify-between border-b border-white/10">
+            <div className="px-5 py-4 flex items-center justify-between border-b border-white/10 bg-gradient-to-r from-[#915EFF]/10 to-[#00CEA8]/10">
               <div className="flex items-center gap-3">
-                <div className="h-9 w-9 rounded-full bg-gradient-to-r from-[#915EFF] to-[#00CEA8] flex items-center justify-center text-white font-bold">
+                <div className="h-10 w-10 rounded-full bg-gradient-to-r from-[#915EFF] to-[#00CEA8] flex items-center justify-center text-white font-bold shadow-lg">
                   N
                 </div>
                 <div className="leading-tight">
                   <p className="text-white font-semibold">Ask Neil</p>
-                  <p className="text-secondary text-xs">Mock UI (wired to real data next)</p>
+                  <p className="text-secondary text-xs flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                    AI-powered • knows my portfolio
+                  </p>
                 </div>
               </div>
               <button
                 onClick={() => setOpen(false)}
-                className="h-9 w-9 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white transition-colors"
+                className="h-9 w-9 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white transition-colors flex items-center justify-center text-lg"
                 aria-label="Close Ask Neil"
               >
                 ×
@@ -160,14 +218,15 @@ export default function AskNeilWidget() {
             {/* Suggested prompts */}
             <div className="px-5 pt-4">
               <p className="text-secondary text-[11px] uppercase tracking-[0.2em] font-semibold">
-                Suggested
+                Try asking
               </p>
               <div className="mt-3 flex flex-wrap gap-2">
-                {SUGGESTED_PROMPTS.map((p) => (
+                {suggestedPrompts.slice(0, 4).map((p) => (
                   <button
                     key={p}
-                    onClick={() => handlePrompt(p)}
-                    className="text-xs px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-white/90 hover:border-[#915EFF]/40 transition-colors"
+                    onClick={() => !loading && handlePrompt(p)}
+                    disabled={loading}
+                    className="text-xs px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-white/90 hover:border-[#915EFF]/40 hover:bg-white/10 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {p}
                   </button>
@@ -176,7 +235,7 @@ export default function AskNeilWidget() {
             </div>
 
             {/* Messages */}
-            <div className="px-5 py-4 max-h-[320px] overflow-auto space-y-3">
+            <div className="px-5 py-4 max-h-[360px] overflow-auto space-y-4 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
               {messages.map((m) => (
                 <motion.div
                   key={m.id}
@@ -186,54 +245,94 @@ export default function AskNeilWidget() {
                   className={`w-full flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
                 >
                   <div
-                    className={`max-w-[85%] rounded-2xl px-4 py-3 border ${
+                    className={`max-w-[90%] rounded-2xl px-4 py-3 ${
                       m.role === "user"
-                        ? "bg-white/10 border-white/10 text-white"
-                        : "bg-black/30 border-white/10 text-white"
+                        ? "bg-gradient-to-r from-[#915EFF]/30 to-[#00CEA8]/30 border border-[#915EFF]/30 text-white"
+                        : "bg-black/40 border border-white/10 text-white/90"
                     }`}
                   >
-                    {m.meta?.title && (
-                      <p className="text-[11px] uppercase tracking-[0.2em] text-secondary mb-1">
-                        {m.meta.title}
-                      </p>
+                    {/* Title badge for assistant messages */}
+                    {m.role === "assistant" && m.meta?.title && (
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className={`text-[10px] uppercase tracking-[0.15em] font-bold px-2 py-0.5 rounded-full ${
+                          m.meta.isFiltered 
+                            ? 'bg-amber-500/20 text-amber-400' 
+                            : 'bg-[#00CEA8]/20 text-[#00CEA8]'
+                        }`}>
+                          {m.meta.title}
+                        </span>
+                      </div>
                     )}
-                    <p className="text-sm leading-relaxed">{m.content}</p>
-                    {m.meta?.sources?.length ? (
-                      <p className="mt-2 text-[11px] text-secondary">
-                        Sources: {m.meta.sources.join(" • ")}
-                      </p>
-                    ) : null}
+                    
+                    {/* Message content with formatting */}
+                    <div className="text-sm">
+                      {m.role === "assistant" ? (
+                        <FormattedText text={m.content} />
+                      ) : (
+                        <p className="leading-relaxed">{m.content}</p>
+                      )}
+                    </div>
+                    
+                    {/* Sources */}
+                    {m.meta?.sources?.length > 0 && !m.meta?.isFiltered && (
+                      <div className="mt-3 pt-2 border-t border-white/5">
+                        <p className="text-[10px] text-secondary/70 flex items-center gap-1">
+                          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          {m.meta.sources.join(" • ")}
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </motion.div>
               ))}
+              
+              {/* Loading indicator */}
+              {loading && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="flex justify-start"
+                >
+                  <div className="bg-black/40 border border-white/10 rounded-2xl px-4 py-3">
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-2 h-2 rounded-full bg-[#915EFF] animate-bounce" style={{ animationDelay: '0ms' }} />
+                      <div className="w-2 h-2 rounded-full bg-[#915EFF]/70 animate-bounce" style={{ animationDelay: '150ms' }} />
+                      <div className="w-2 h-2 rounded-full bg-[#915EFF]/40 animate-bounce" style={{ animationDelay: '300ms' }} />
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+              
+              <div ref={messagesEndRef} />
             </div>
 
             {/* Footer */}
-            <div className="px-5 pb-5">
-              <div className="flex gap-2 mb-3">
-                {quickActions.map((a) => (
-                  <button
-                    key={a.label}
-                    onClick={a.onClick}
-                    className="flex-1 text-xs px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-white hover:border-[#915EFF]/40 transition-colors"
-                  >
-                    {a.label}
-                  </button>
-                ))}
-              </div>
-
+            <div className="px-5 pb-5 border-t border-white/10 pt-4">
               <form onSubmit={handleSend} className="flex gap-2">
                 <input
                   value={draft}
                   onChange={(e) => setDraft(e.target.value)}
-                  placeholder="Ask about projects, school, basketball…"
-                  className="flex-1 bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-secondary focus:outline-none focus:border-[#915EFF]/50"
+                  placeholder="Ask about projects, experience, skills…"
+                  disabled={loading}
+                  className="flex-1 bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-secondary focus:outline-none focus:border-[#915EFF]/50 disabled:opacity-50 transition-all"
                 />
                 <button
                   type="submit"
-                  className="px-4 py-3 rounded-xl bg-gradient-to-r from-[#915EFF] to-[#00CEA8] text-white font-semibold text-sm hover:brightness-110 transition"
+                  disabled={loading || !draft.trim()}
+                  className="px-4 py-3 rounded-xl bg-gradient-to-r from-[#915EFF] to-[#00CEA8] text-white font-semibold text-sm hover:brightness-110 transition disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Send
+                  {loading ? (
+                    <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    </svg>
+                  ) : (
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                    </svg>
+                  )}
                 </button>
               </form>
             </div>
@@ -243,4 +342,3 @@ export default function AskNeilWidget() {
     </div>
   );
 }
-

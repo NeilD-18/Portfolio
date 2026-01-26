@@ -5,6 +5,8 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
+import helmet from 'helmet';
+import compression from 'compression';
 
 
 dotenv.config();
@@ -19,12 +21,43 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .catch(err => console.error('❌ Could not connect to MongoDB', err));
 
 // Middleware
+// Helmet defaults can block loading images across origins in dev (5173 -> 8081).
+// Allow cross-origin resource loading while keeping other protections.
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: 'cross-origin' },
+  crossOriginEmbedderPolicy: false,
+}));
+app.use(compression());
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
+const isProduction = process.env.NODE_ENV === 'production';
+const normalizeOrigin = (origin) => origin.trim().replace(/\/+$/, '');
+const allowedOrigins = (process.env.ALLOWED_ORIGINS || '')
+  .split(',')
+  .map((origin) => normalizeOrigin(origin))
+  .filter(Boolean);
+const defaultProdOrigins = ['https://neildaterao.com', 'https://www.neildaterao.com'];
+const defaultDevOrigins = ['http://localhost:5173', 'http://127.0.0.1:5173'];
+
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' ? '*' : 'http://localhost:5173',
+  origin: (origin, callback) => {
+    if (!origin) {
+      return callback(null, true);
+    }
+
+    if (!isProduction) {
+      return callback(null, defaultDevOrigins.includes(normalizeOrigin(origin)));
+    }
+
+    const allowlist = allowedOrigins.length > 0 ? allowedOrigins : defaultProdOrigins;
+    if (allowlist.includes(normalizeOrigin(origin))) {
+      return callback(null, true);
+    }
+
+    return callback(new Error('Not allowed by CORS'));
+  },
   credentials: true
 }));
 
