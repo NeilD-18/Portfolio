@@ -3,14 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/Neil_Logo.svg" />
+    <link rel="apple-touch-icon" href="/Neil_Logo.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Neil Daterao | Portfolio</title>
     <meta
       name="description"
       content="Neil Daterao — full-stack developer and student-athlete. Explore projects, experience, education, and a modern portfolio with an AI-powered Ask Neil widget."
     />
+    <meta name="keywords" content="Neil Daterao, full-stack developer, software engineer, portfolio, web development, React, Node.js, student-athlete" />
+    <meta name="author" content="Neil Daterao" />
     <link rel="canonical" href="https://neildaterao.com" />
     <meta name="theme-color" content="#0b0b12" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Preconnect hints for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
     <!-- Open Graph -->
     <meta property="og:title" content="Neil Daterao | Portfolio" />
@@ -21,7 +29,11 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://neildaterao.com" />
     <meta property="og:image" content="https://neildaterao.com/linkedin_headshot.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="Neil Daterao headshot" />
+    <meta property="og:site_name" content="Neil Daterao Portfolio" />
+    <meta property="og:locale" content="en_US" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -31,6 +43,38 @@
       content="Full-stack developer and student-athlete. Explore projects, experience, education, and a modern portfolio."
     />
     <meta name="twitter:image" content="https://neildaterao.com/linkedin_headshot.jpg" />
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Neil Daterao",
+      "url": "https://neildaterao.com",
+      "image": "https://neildaterao.com/linkedin_headshot.jpg",
+      "jobTitle": "Full-Stack Developer",
+      "description": "Full-stack developer and student-athlete passionate about solving interesting problems.",
+      "knowsAbout": ["Web Development", "React", "Node.js", "JavaScript", "TypeScript", "Software Engineering"],
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://neildaterao.com"
+      }
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Neil Daterao Portfolio",
+      "url": "https://neildaterao.com",
+      "description": "Personal portfolio website of Neil Daterao, showcasing projects, experience, and skills.",
+      "author": {
+        "@type": "Person",
+        "name": "Neil Daterao"
+      }
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -1,0 +1,10 @@
+# robots.txt for neildaterao.com
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://neildaterao.com/sitemap.xml
+
+# Disallow admin/portal routes from indexing
+Disallow: /portal
+Disallow: /login

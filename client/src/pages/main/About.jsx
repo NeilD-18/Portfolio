@@ -6,6 +6,13 @@ import { styles } from '../../styles';
 import { fadeIn, textVariant } from '../../utils/motion';
 import { SectionWrapper } from '../../hoc';
 
+const aboutImageDescriptions = [
+  "Neil Daterao - Professional photo",
+  "Neil Daterao - At work",
+  "Neil Daterao - Personal interests",
+  "Neil Daterao - Activities and hobbies"
+];
+
 const ServiceCard = ({ index, image }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   
@@ -30,7 +37,7 @@ const ServiceCard = ({ index, image }) => {
           
           <img
             src={image}
-            alt={`service-${index}`}
+            alt={aboutImageDescriptions[index] || `About Neil Daterao - Image ${index + 1}`}
             onLoad={() => setImageLoaded(true)}
             className={`w-full h-full object-cover transition-opacity duration-500 ${
               imageLoaded ? 'opacity-100' : 'opacity-0'

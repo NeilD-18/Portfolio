@@ -13,7 +13,7 @@ import ScrollProgress from './components/ScrollProgress';
 import BackToTop from './components/BackToTop';
 import AskNeilWidget from './components/AskNeilWidget';
 
-axios.defaults.baseURL = import.meta.env.VITE_API_URL || "http://localhost:8081";
+axios.defaults.baseURL = import.meta.env.VITE_API_URL || "https://neildaterao.com";
 axios.defaults.withCredentials = true;
 
 const App = () => {
@@ -28,20 +28,20 @@ const App = () => {
           
           <Routes>
             <Route path="/" element={
-              <>
-                <div className="bg-purplehue bg-cover bg-no-repeat bg-center">
+              <main>
+                <header className="bg-purplehue bg-cover bg-no-repeat bg-center">
                   <Navbar />
                   <Hero />
-                </div>
+                </header>
                 <About />
                 <Education />
                 <Experience />
                 <Works />
                 <BeyondCode />
-                <div className="relative z-0">
+                <footer className="relative z-0">
                   <Contact />
-                </div>
-              </>
+                </footer>
+              </main>
             } />
             <Route path="/login" element={<LoginPage />} />
             <Route element={<PrivateRoutes/>}>

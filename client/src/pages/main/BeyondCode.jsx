@@ -20,19 +20,19 @@ const preloadImage = (src) => {
 const categoryConfig = {
   All: {
     label: 'Curated',
-    description: "A visual story of who I am — the grind, the style, and everything in between."
+    description: "A visual story of who I am — the life, work, and everything in between."
   },
   Athletics: {
     label: 'Athletics',
-    description: "The discipline, the grind, and the love for the game. D3 Basketball at Union College."
+    description: "Hooper at heart."
   },
   Aesthetic: {
     label: 'Aesthetic',
-    description: "Minimalism meets streetwear. Fashion as a form of creative expression."
+    description: "Photos that match my vibe."
   },
   Life: {
     label: 'Life',
-    description: "Travel, experiences, and the little moments that fuel my creativity."
+    description: "Travel, experiences, and the little moments."
   }
 };
 
