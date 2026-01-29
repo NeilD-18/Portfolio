@@ -13,7 +13,7 @@ import ScrollProgress from './components/ScrollProgress';
 import BackToTop from './components/BackToTop';
 import AskNeilWidget from './components/AskNeilWidget';
 
-axios.defaults.baseURL = import.meta.env.VITE_API_URL || "https://neildaterao.com";
+axios.defaults.baseURL = import.meta.env.VITE_API_URL || "";
 axios.defaults.withCredentials = true;
 
 const App = () => {

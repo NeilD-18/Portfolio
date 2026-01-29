@@ -7,6 +7,7 @@ import contactRoutes from "./contactRoutes.js";
 import educationRoutes from "./educationRoutes.js";
 import moodBoardRoutes from "./moodBoardRoutes.js";
 import askRoutes from "./askRoutes.js";
+import analyticsRoutes from "./analyticsRoutes.js";
 
 const router = express.Router();
 
@@ -19,5 +20,6 @@ router.use(contactRoutes);
 router.use(educationRoutes);
 router.use(moodBoardRoutes);
 router.use(askRoutes);
+router.use(analyticsRoutes);
 
 export default router;

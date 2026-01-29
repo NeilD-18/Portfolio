@@ -1,13 +1,27 @@
-import OpenAI from "openai";
+import { OpenAI } from "@posthog/ai";
+import { PostHog } from 'posthog-node';
 import About from "../models/aboutModel.js";
 import Project from "../models/projectModel.js";
 import Experience from "../models/experienceModel.js";
 import Education from "../models/educationModel.js";
 
-// Initialize OpenAI client
+// Initialize PostHog client for LLM analytics
+const phClient = new PostHog(
+    process.env.POSTHOG_API_KEY,
+    { 
+        host: process.env.POSTHOG_HOST,
+        flushAt: 1, // Send events immediately for debugging
+        flushInterval: 0,
+    }
+);
+
+// Initialize OpenAI client with PostHog wrapper for automatic LLM tracking
 const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY
+    apiKey: process.env.OPENAI_API_KEY,
+    posthog: phClient,
 });
+
+console.log('[PostHog] LLM Analytics initialized with host:', process.env.POSTHOG_HOST);
 
 const KB_CACHE_TTL_MS = Number(process.env.ASK_KB_TTL_MS || '300000'); // 5 minutes
 let knowledgeCache = {
@@ -19,7 +33,7 @@ let knowledgeCache = {
  * Use AI to classify if a query is relevant to Neil's portfolio
  * This is a cheap call (~20-30 tokens) that saves expensive calls
  */
-const classifyQueryRelevance = async (query) => {
+const classifyQueryRelevance = async (query, sessionId) => {
     try {
         const completion = await openai.chat.completions.create({
             model: "gpt-4o-mini",
@@ -62,6 +76,9 @@ Examples:
             ],
             max_tokens: 3,
             temperature: 0,
+            // PostHog LLM tracking properties
+            posthog_distinct_id: sessionId,
+            posthog_properties: { type: 'classifier', feature: 'ask_neil' },
         });
 
         const response = completion.choices[0]?.message?.content?.toLowerCase().trim();
@@ -330,6 +347,10 @@ const getOffTopicResponse = () => ({
  * Main endpoint handler for Ask Neil
  */
 export const askNeil = async (req, res) => {
+    // Generate a session ID for tracking (use IP + timestamp as anonymous identifier)
+    const sessionId = `visitor_${req.ip || 'unknown'}_${Date.now()}`;
+    const traceId = `ask_neil_${Date.now()}`;
+    
     try {
         const { query } = req.body;
 
@@ -354,7 +375,7 @@ export const askNeil = async (req, res) => {
         
         // Step 3: Use AI classifier for ambiguous queries (~3 tokens, very cheap)
         if (!obviouslyRelevant) {
-            const isRelevant = await classifyQueryRelevance(query);
+            const isRelevant = await classifyQueryRelevance(query, sessionId);
             if (!isRelevant) {
                 console.log(`[Ask Neil] Blocked by classifier: "${query.substring(0, 50)}..."`);
                 return res.json(getOffTopicResponse());
@@ -365,6 +386,8 @@ export const askNeil = async (req, res) => {
         const knowledgeBase = await getKnowledgeBaseCached();
         const systemPrompt = buildSystemPrompt(knowledgeBase);
 
+        console.log(`[PostHog] Tracking LLM generation for session: ${sessionId}`);
+        
         const completion = await openai.chat.completions.create({
             model: "gpt-4o-mini",
             messages: [
@@ -373,6 +396,10 @@ export const askNeil = async (req, res) => {
             ],
             max_tokens: 400,
             temperature: 0.7,
+            // PostHog LLM tracking properties
+            posthog_distinct_id: sessionId,
+            posthog_trace_id: traceId,
+            posthog_properties: { type: 'response', feature: 'ask_neil', query_length: query.length },
         });
 
         const aiResponse = completion.choices[0]?.message?.content || "I'd be happy to tell you more — feel free to reach out directly!";
@@ -397,6 +424,10 @@ export const askNeil = async (req, res) => {
         }
         
         res.status(500).json({ error: "Failed to process your question" });
+    } finally {
+        // Flush pending events without shutting down the client
+        // shutdown() kills the client permanently - don't use it per-request
+        await phClient.flush();
     }
 };
 
